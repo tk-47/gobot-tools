@@ -1,0 +1,13 @@
+{
+  "name": "supabase-to-convex",
+  "displayName": "Supabase to Convex Migration",
+  "description": "Step-by-step migration from Supabase to Convex with zero downtime. Backend adapter pattern with instant rollback at every phase. Preserves all data and embeddings.",
+  "version": "1.0.0",
+  "author": "tk-47",
+  "category": "infrastructure",
+  "tags": ["database", "migration", "supabase", "convex", "postgresql", "vector-search", "zero-downtime"],
+  "dependencies": [],
+  "files": ["prompt.md"],
+  "envVars": ["CONVEX_URL", "DB_BACKEND"],
+  "postInstall": "Open prompt.md in Claude Code and say: \"Start the Convex migration\""
+}

@@ -1,0 +1,13 @@
+{
+  "name": "flightaware",
+  "displayName": "FlightAware Flight Tracking",
+  "description": "Real-time flight tracking via FlightAware AeroAPI. One-time lookups, active tracking with proactive Telegram notifications, morning briefing integration, and cost guardrails.",
+  "version": "1.0.0",
+  "author": "tk-47",
+  "category": "integrations",
+  "tags": ["flights", "aviation", "tracking", "flightaware", "travel", "airports", "notifications"],
+  "dependencies": [],
+  "files": ["prompt.md"],
+  "envVars": ["FLIGHTAWARE_API_KEY"],
+  "postInstall": "Open prompt.md in Claude Code and say: \"Set up FlightAware flight tracking\""
+}

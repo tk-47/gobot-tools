@@ -1,0 +1,13 @@
+{
+  "name": "oura-ring",
+  "displayName": "Oura Ring + Health Agent",
+  "description": "Connect to an Oura Ring for sleep, readiness, activity, and stress data. Includes a Health Agent board member for biometrics, medication lookups, symptom checking, and wellness guidance.",
+  "version": "1.0.0",
+  "author": "tk-47",
+  "category": "health",
+  "tags": ["oura", "sleep", "health", "biometrics", "hrv", "readiness", "wellness", "wearable"],
+  "dependencies": [],
+  "files": ["prompt.md"],
+  "envVars": ["OURA_ACCESS_TOKEN"],
+  "postInstall": "Open prompt.md in Claude Code and say: \"Set up Oura Ring integration\""
+}

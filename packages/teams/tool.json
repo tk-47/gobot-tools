@@ -1,0 +1,13 @@
+{
+  "name": "teams",
+  "displayName": "Microsoft Teams",
+  "description": "Add Microsoft Teams as a second messaging platform. Synchronized conversations across Telegram and Teams, Adaptive Cards for human-in-the-loop, and hybrid VPS routing.",
+  "version": "1.0.0",
+  "author": "tk-47",
+  "category": "messaging",
+  "tags": ["teams", "microsoft", "chat", "messaging", "adaptive-cards", "bot-framework"],
+  "dependencies": ["ms365"],
+  "files": ["prompt.md"],
+  "envVars": ["TEAMS_APP_ID", "TEAMS_APP_PASSWORD", "TEAMS_ALLOWED_USER_ID", "TEAMS_TENANT_ID"],
+  "postInstall": "Open prompt.md in Claude Code and say: \"Set up Teams integration\""
+}

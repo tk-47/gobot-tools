@@ -1,0 +1,13 @@
+{
+  "name": "google-api",
+  "displayName": "Google Calendar & Sheets",
+  "description": "Connect to Google Calendar and Sheets using lightweight Python CLI scripts and a TypeScript client. Read/create events, read/write spreadsheets, and use data in briefings.",
+  "version": "1.0.0",
+  "author": "tk-47",
+  "category": "integrations",
+  "tags": ["calendar", "sheets", "google", "drive", "spreadsheets", "python"],
+  "dependencies": [],
+  "files": ["prompt.md"],
+  "envVars": ["GOOGLE_SHEETS_CLIENT_ID", "GOOGLE_SHEETS_CLIENT_SECRET", "GOOGLE_SHEETS_REFRESH_TOKEN"],
+  "postInstall": "Open prompt.md in Claude Code and say: \"Set up Google Calendar and Sheets integration\""
+}

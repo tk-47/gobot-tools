@@ -1,0 +1,13 @@
+{
+  "name": "vps-hardening",
+  "displayName": "VPS Hardening",
+  "description": "A 9-phase VPS security hardening prompt. SSH lockdown, Fail2Ban with progressive bans, UFW firewall, Cloudflare origin protection, Docker-aware rules, auto-updates, and more.",
+  "version": "1.0.0",
+  "author": "tk-47",
+  "category": "security",
+  "tags": ["security", "vps", "ssh", "firewall", "ufw", "fail2ban", "hardening", "linux", "cloudflare"],
+  "dependencies": [],
+  "files": ["prompt.md"],
+  "envVars": [],
+  "postInstall": "Open prompt.md while connected to your VPS via Claude Code. Paste the prompt and follow the steps."
+}

@@ -1,0 +1,13 @@
+{
+  "name": "voice-interface",
+  "displayName": "Voice Interface",
+  "description": "Add two voice interfaces: Telegram voice notes (Gemini STT + Speaktor TTS) and a web push-to-talk interface (Web Speech API + OpenAI TTS). Per-agent voice mapping.",
+  "version": "1.0.0",
+  "author": "tk-47",
+  "category": "messaging",
+  "tags": ["voice", "tts", "stt", "speech", "openai", "gemini", "speaktor", "telegram", "websocket"],
+  "dependencies": [],
+  "files": ["prompt.md"],
+  "envVars": ["GEMINI_API_KEY", "SPEAKTOR_API_KEY", "OPENAI_API_KEY", "VOICE_WEB_TOKEN"],
+  "postInstall": "Open prompt.md in Claude Code and say: \"Set up voice interface\""
+}

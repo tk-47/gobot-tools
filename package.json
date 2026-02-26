@@ -1,0 +1,30 @@
+{
+  "name": "gobot-tools",
+  "version": "1.0.0",
+  "description": "CLI marketplace for Autonomee community bot tools — browse, install, and configure integrations for your AI Telegram bot",
+  "type": "module",
+  "bin": {
+    "gobot-tools": "./cli/src/index.ts"
+  },
+  "scripts": {
+    "dev": "bun run cli/src/index.ts",
+    "registry": "bun run scripts/generate-registry.ts",
+    "build": "cd cli && bun build src/index.ts --outdir dist --target node"
+  },
+  "keywords": [
+    "autonomee",
+    "telegram-bot",
+    "claude",
+    "ai-agent",
+    "tools",
+    "marketplace",
+    "integrations"
+  ],
+  "author": "tk-47",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tk-47/gobot-tools.git"
+  },
+  "homepage": "https://github.com/tk-47/gobot-tools#readme"
+}

@@ -1,0 +1,13 @@
+{
+  "name": "ms365",
+  "displayName": "Microsoft 365",
+  "description": "Connect to Outlook Calendar, Email, and Microsoft To Do via the Microsoft Graph API. Read/write calendar events, check inbox, manage tasks, and include data in morning briefings.",
+  "version": "1.0.0",
+  "author": "tk-47",
+  "category": "integrations",
+  "tags": ["calendar", "email", "outlook", "microsoft", "graph-api", "tasks", "todo"],
+  "dependencies": [],
+  "files": ["prompt.md"],
+  "envVars": ["MS365_CLIENT_ID", "MS365_TENANT_ID", "MS365_REFRESH_TOKEN"],
+  "postInstall": "Open prompt.md in Claude Code and say: \"Set up Microsoft 365 integration\""
+}

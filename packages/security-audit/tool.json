@@ -1,0 +1,13 @@
+{
+  "name": "security-audit",
+  "displayName": "Application Security Audit",
+  "description": "A 5-phase security audit prompt for any codebase. Maps attack surface, identifies injection/auth/crypto/config vulnerabilities, classifies by severity, and walks through fixes one at a time.",
+  "version": "1.0.0",
+  "author": "tk-47",
+  "category": "security",
+  "tags": ["security", "audit", "vulnerabilities", "injection", "authentication", "owasp", "pentest"],
+  "dependencies": [],
+  "files": ["prompt.md"],
+  "envVars": [],
+  "postInstall": "Open prompt.md in Claude Code while in your project directory. Paste the prompt and let it run."
+}

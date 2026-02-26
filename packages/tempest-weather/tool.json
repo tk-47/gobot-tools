@@ -1,0 +1,13 @@
+{
+  "name": "tempest-weather",
+  "displayName": "Tempest Weather Station",
+  "description": "Connect to a WeatherFlow Tempest personal weather station for live conditions and 5-day forecasts. Bypasses Claude for speed and accuracy with direct API calls.",
+  "version": "1.0.0",
+  "author": "tk-47",
+  "category": "integrations",
+  "tags": ["weather", "tempest", "weatherflow", "forecast", "temperature", "station"],
+  "dependencies": [],
+  "files": ["prompt.md"],
+  "envVars": ["TEMPEST_TOKEN", "TEMPEST_STATION_ID"],
+  "postInstall": "Open prompt.md in Claude Code and say: \"Set up Tempest weather integration\""
+}

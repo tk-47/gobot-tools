@@ -1,0 +1,13 @@
+{
+  "name": "fireflies",
+  "displayName": "Fireflies.ai Meeting Transcripts",
+  "description": "Auto-capture meeting summaries and action items from Fireflies.ai. Stores summaries as memory facts and action items as trackable goals with Telegram notifications.",
+  "version": "1.0.0",
+  "author": "tk-47",
+  "category": "integrations",
+  "tags": ["meetings", "transcription", "fireflies", "zoom", "google-meet", "action-items", "webhook"],
+  "dependencies": [],
+  "files": ["prompt.md"],
+  "envVars": ["FIREFLIES_API_KEY", "FIREFLIES_WEBHOOK_SECRET"],
+  "postInstall": "Open prompt.md in Claude Code and say: \"Set up Fireflies.ai integration\""
+}

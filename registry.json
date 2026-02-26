@@ -1,0 +1,294 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-02-26T22:55:50.604Z",
+  "tools": [
+    {
+      "name": "fireflies",
+      "displayName": "Fireflies.ai Meeting Transcripts",
+      "description": "Auto-capture meeting summaries and action items from Fireflies.ai. Stores summaries as memory facts and action items as trackable goals with Telegram notifications.",
+      "version": "1.0.0",
+      "author": "tk-47",
+      "category": "integrations",
+      "tags": [
+        "meetings",
+        "transcription",
+        "fireflies",
+        "zoom",
+        "google-meet",
+        "action-items",
+        "webhook"
+      ],
+      "dependencies": [],
+      "files": [
+        "prompt.md"
+      ],
+      "envVars": [
+        "FIREFLIES_API_KEY",
+        "FIREFLIES_WEBHOOK_SECRET"
+      ],
+      "postInstall": "Open prompt.md in Claude Code and say: \"Set up Fireflies.ai integration\""
+    },
+    {
+      "name": "flightaware",
+      "displayName": "FlightAware Flight Tracking",
+      "description": "Real-time flight tracking via FlightAware AeroAPI. One-time lookups, active tracking with proactive Telegram notifications, morning briefing integration, and cost guardrails.",
+      "version": "1.0.0",
+      "author": "tk-47",
+      "category": "integrations",
+      "tags": [
+        "flights",
+        "aviation",
+        "tracking",
+        "flightaware",
+        "travel",
+        "airports",
+        "notifications"
+      ],
+      "dependencies": [],
+      "files": [
+        "prompt.md"
+      ],
+      "envVars": [
+        "FLIGHTAWARE_API_KEY"
+      ],
+      "postInstall": "Open prompt.md in Claude Code and say: \"Set up FlightAware flight tracking\""
+    },
+    {
+      "name": "google-api",
+      "displayName": "Google Calendar & Sheets",
+      "description": "Connect to Google Calendar and Sheets using lightweight Python CLI scripts and a TypeScript client. Read/create events, read/write spreadsheets, and use data in briefings.",
+      "version": "1.0.0",
+      "author": "tk-47",
+      "category": "integrations",
+      "tags": [
+        "calendar",
+        "sheets",
+        "google",
+        "drive",
+        "spreadsheets",
+        "python"
+      ],
+      "dependencies": [],
+      "files": [
+        "prompt.md"
+      ],
+      "envVars": [
+        "GOOGLE_SHEETS_CLIENT_ID",
+        "GOOGLE_SHEETS_CLIENT_SECRET",
+        "GOOGLE_SHEETS_REFRESH_TOKEN"
+      ],
+      "postInstall": "Open prompt.md in Claude Code and say: \"Set up Google Calendar and Sheets integration\""
+    },
+    {
+      "name": "ms365",
+      "displayName": "Microsoft 365",
+      "description": "Connect to Outlook Calendar, Email, and Microsoft To Do via the Microsoft Graph API. Read/write calendar events, check inbox, manage tasks, and include data in morning briefings.",
+      "version": "1.0.0",
+      "author": "tk-47",
+      "category": "integrations",
+      "tags": [
+        "calendar",
+        "email",
+        "outlook",
+        "microsoft",
+        "graph-api",
+        "tasks",
+        "todo"
+      ],
+      "dependencies": [],
+      "files": [
+        "prompt.md"
+      ],
+      "envVars": [
+        "MS365_CLIENT_ID",
+        "MS365_TENANT_ID",
+        "MS365_REFRESH_TOKEN"
+      ],
+      "postInstall": "Open prompt.md in Claude Code and say: \"Set up Microsoft 365 integration\""
+    },
+    {
+      "name": "oura-ring",
+      "displayName": "Oura Ring + Health Agent",
+      "description": "Connect to an Oura Ring for sleep, readiness, activity, and stress data. Includes a Health Agent board member for biometrics, medication lookups, symptom checking, and wellness guidance.",
+      "version": "1.0.0",
+      "author": "tk-47",
+      "category": "health",
+      "tags": [
+        "oura",
+        "sleep",
+        "health",
+        "biometrics",
+        "hrv",
+        "readiness",
+        "wellness",
+        "wearable"
+      ],
+      "dependencies": [],
+      "files": [
+        "prompt.md"
+      ],
+      "envVars": [
+        "OURA_ACCESS_TOKEN"
+      ],
+      "postInstall": "Open prompt.md in Claude Code and say: \"Set up Oura Ring integration\""
+    },
+    {
+      "name": "security-audit",
+      "displayName": "Application Security Audit",
+      "description": "A 5-phase security audit prompt for any codebase. Maps attack surface, identifies injection/auth/crypto/config vulnerabilities, classifies by severity, and walks through fixes one at a time.",
+      "version": "1.0.0",
+      "author": "tk-47",
+      "category": "security",
+      "tags": [
+        "security",
+        "audit",
+        "vulnerabilities",
+        "injection",
+        "authentication",
+        "owasp",
+        "pentest"
+      ],
+      "dependencies": [],
+      "files": [
+        "prompt.md"
+      ],
+      "envVars": [],
+      "postInstall": "Open prompt.md in Claude Code while in your project directory. Paste the prompt and let it run."
+    },
+    {
+      "name": "supabase-to-convex",
+      "displayName": "Supabase to Convex Migration",
+      "description": "Step-by-step migration from Supabase to Convex with zero downtime. Backend adapter pattern with instant rollback at every phase. Preserves all data and embeddings.",
+      "version": "1.0.0",
+      "author": "tk-47",
+      "category": "infrastructure",
+      "tags": [
+        "database",
+        "migration",
+        "supabase",
+        "convex",
+        "postgresql",
+        "vector-search",
+        "zero-downtime"
+      ],
+      "dependencies": [],
+      "files": [
+        "prompt.md"
+      ],
+      "envVars": [
+        "CONVEX_URL",
+        "DB_BACKEND"
+      ],
+      "postInstall": "Open prompt.md in Claude Code and say: \"Start the Convex migration\""
+    },
+    {
+      "name": "teams",
+      "displayName": "Microsoft Teams",
+      "description": "Add Microsoft Teams as a second messaging platform. Synchronized conversations across Telegram and Teams, Adaptive Cards for human-in-the-loop, and hybrid VPS routing.",
+      "version": "1.0.0",
+      "author": "tk-47",
+      "category": "messaging",
+      "tags": [
+        "teams",
+        "microsoft",
+        "chat",
+        "messaging",
+        "adaptive-cards",
+        "bot-framework"
+      ],
+      "dependencies": [
+        "ms365"
+      ],
+      "files": [
+        "prompt.md"
+      ],
+      "envVars": [
+        "TEAMS_APP_ID",
+        "TEAMS_APP_PASSWORD",
+        "TEAMS_ALLOWED_USER_ID",
+        "TEAMS_TENANT_ID"
+      ],
+      "postInstall": "Open prompt.md in Claude Code and say: \"Set up Teams integration\""
+    },
+    {
+      "name": "tempest-weather",
+      "displayName": "Tempest Weather Station",
+      "description": "Connect to a WeatherFlow Tempest personal weather station for live conditions and 5-day forecasts. Bypasses Claude for speed and accuracy with direct API calls.",
+      "version": "1.0.0",
+      "author": "tk-47",
+      "category": "integrations",
+      "tags": [
+        "weather",
+        "tempest",
+        "weatherflow",
+        "forecast",
+        "temperature",
+        "station"
+      ],
+      "dependencies": [],
+      "files": [
+        "prompt.md"
+      ],
+      "envVars": [
+        "TEMPEST_TOKEN",
+        "TEMPEST_STATION_ID"
+      ],
+      "postInstall": "Open prompt.md in Claude Code and say: \"Set up Tempest weather integration\""
+    },
+    {
+      "name": "voice-interface",
+      "displayName": "Voice Interface",
+      "description": "Add two voice interfaces: Telegram voice notes (Gemini STT + Speaktor TTS) and a web push-to-talk interface (Web Speech API + OpenAI TTS). Per-agent voice mapping.",
+      "version": "1.0.0",
+      "author": "tk-47",
+      "category": "messaging",
+      "tags": [
+        "voice",
+        "tts",
+        "stt",
+        "speech",
+        "openai",
+        "gemini",
+        "speaktor",
+        "telegram",
+        "websocket"
+      ],
+      "dependencies": [],
+      "files": [
+        "prompt.md"
+      ],
+      "envVars": [
+        "GEMINI_API_KEY",
+        "SPEAKTOR_API_KEY",
+        "OPENAI_API_KEY",
+        "VOICE_WEB_TOKEN"
+      ],
+      "postInstall": "Open prompt.md in Claude Code and say: \"Set up voice interface\""
+    },
+    {
+      "name": "vps-hardening",
+      "displayName": "VPS Hardening",
+      "description": "A 9-phase VPS security hardening prompt. SSH lockdown, Fail2Ban with progressive bans, UFW firewall, Cloudflare origin protection, Docker-aware rules, auto-updates, and more.",
+      "version": "1.0.0",
+      "author": "tk-47",
+      "category": "security",
+      "tags": [
+        "security",
+        "vps",
+        "ssh",
+        "firewall",
+        "ufw",
+        "fail2ban",
+        "hardening",
+        "linux",
+        "cloudflare"
+      ],
+      "dependencies": [],
+      "files": [
+        "prompt.md"
+      ],
+      "envVars": [],
+      "postInstall": "Open prompt.md while connected to your VPS via Claude Code. Paste the prompt and follow the steps."
+    }
+  ]
+}
