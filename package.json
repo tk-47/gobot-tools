@@ -4,12 +4,18 @@
   "description": "CLI marketplace for Autonomee community bot tools — browse, install, and configure integrations for your AI Telegram bot",
   "type": "module",
   "bin": {
-    "gobot-tools": "./cli/src/index.ts"
+    "gobot-tools": "./dist/index.js"
   },
+  "files": [
+    "dist/index.js",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "dev": "bun run cli/src/index.ts",
     "registry": "bun run scripts/generate-registry.ts",
-    "build": "cd cli && bun build src/index.ts --outdir dist --target node"
+    "build": "cd cli && bun build src/index.ts --outfile ../dist/index.js --target node --minify",
+    "prepublishOnly": "npm run build"
   },
   "keywords": [
     "autonomee",
