@@ -1,0 +1,35 @@
+{
+  "name": "security-sentinel",
+  "displayName": "Security Sentinel",
+  "description": "Autonomous security scanning agent for VPS and web infrastructure. 80+ checks across auth, TLS, headers, VPS hardening, API credentials, and dependencies. SOC2, HIPAA, and PCI-DSS compliance reporting. Optional AI analysis via Ollama or Claude API.",
+  "version": "1.0.0",
+  "author": "tk-47",
+  "category": "security",
+  "tags": ["security", "scanner", "vps", "compliance", "soc2", "hipaa", "pci-dss", "nmap", "nuclei", "ollama"],
+  "dependencies": [],
+  "files": [
+    "prompt.md",
+    "README.md",
+    "package.json",
+    "tsconfig.json",
+    ".env.example",
+    ".gitignore",
+    "src/index.ts",
+    "src/config.ts",
+    "src/lib/scanner.ts",
+    "src/lib/recon.ts",
+    "src/lib/tools.ts"
+  ],
+  "envVars": [
+    "VPS_URL",
+    "VPS_SSH_HOST",
+    "VPS_SSH_USER",
+    "VPS_SSH_KEY",
+    "DOMAIN",
+    "WEBHOOK_ENDPOINTS",
+    "TELEGRAM_BOT_TOKEN",
+    "TELEGRAM_USER_ID",
+    "ANTHROPIC_API_KEY"
+  ],
+  "postInstall": "cd into the installed directory, run 'bun install', copy .env.example to .env, fill in your values, then run 'bun run scan'. Or open prompt.md in Claude Code and say: \"Set up Security Sentinel for my infrastructure\""
+}

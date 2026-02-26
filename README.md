@@ -61,6 +61,7 @@ After installing, open the tool's `prompt.md` in Claude Code and follow the guid
 
 | Tool | Description |
 |------|-------------|
+| **security-sentinel** | Autonomous security scanner — 80+ checks, SOC2/HIPAA/PCI-DSS compliance, AI analysis |
 | **security-audit** | 5-phase application security audit prompt — works on any codebase |
 | **vps-hardening** | 9-phase VPS hardening prompt — SSH, Fail2Ban, UFW, Cloudflare, auto-updates |
 
