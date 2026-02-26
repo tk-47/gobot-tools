@@ -1,5 +1,5 @@
 import { existsSync, mkdirSync, writeFileSync } from "fs";
-import { join } from "path";
+import { dirname, join } from "path";
 import { loadConfig, saveConfig } from "./config.js";
 import type { ToolManifest } from "./registry.js";
 
@@ -24,6 +24,7 @@ export async function installTool(tool: ToolManifest): Promise<void> {
     if (!res.ok) throw new Error(`Failed to download ${file}: ${res.status}`);
     const content = await res.text();
     const dest = join(installDir, file);
+    mkdirSync(dirname(dest), { recursive: true });
     writeFileSync(dest, content);
   }
 
