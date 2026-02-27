@@ -58,6 +58,9 @@ export const GITHUB_REPO = process.env.GITHUB_REPO || "";
 // --- Timezone ---
 export const TIMEZONE = process.env.TIMEZONE || "UTC";
 
+// --- httpx Targets ---
+export const HTTPX_TARGETS = (process.env.HTTPX_TARGETS || VPS_URL).split(",").map(s => s.trim()).filter(Boolean);
+
 // --- Cloudflare IP Ranges (public, stable — for DNS verification) ---
 export const CLOUDFLARE_RANGES = [
   "104.", "172.64.", "172.65.", "172.66.", "172.67.",

@@ -39,8 +39,9 @@ bun run install-check
 ```
 
 Show the user the results. If tools are missing, explain which scan modes they affect:
-- **nmap, nuclei, trufflehog, trivy** — needed for `daily` and `deep` scans. Without them, those tools are skipped gracefully.
-- **testssl.sh** — needed for `deep` scan TLS audit only.
+- **nmap, nuclei, trufflehog, trivy, semgrep, gitleaks, grype, checkdmarc, httpx** — needed for `daily` and `deep` scans. Without them, those tools are skipped gracefully.
+- **lynis** — needs to be installed on the VPS (`apt install lynis`), not locally.
+- **testssl.sh, sslyze** — needed for `deep` scan TLS audits only.
 - **Ollama** — needed for AI review in `hourly` and `daily` modes.
 
 Don't pressure them to install everything. The scanner works fine without optional tools — it just skips those checks.

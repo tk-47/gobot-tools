@@ -465,6 +465,13 @@ function checkInstall() {
     { name: "testssl.sh", install: "brew install testssl" },
     { name: "trufflehog", install: "brew install trufflehog" },
     { name: "trivy", install: "brew install trivy" },
+    { name: "semgrep", install: "brew install semgrep" },
+    { name: "gitleaks", install: "brew install gitleaks" },
+    { name: "grype", install: "brew install grype" },
+    { name: "lynis", install: "brew install lynis" },
+    { name: "sslyze", install: "pip3 install sslyze" },
+    { name: "checkdmarc", install: "pip3 install checkdmarc" },
+    { name: "httpx", install: "brew install httpx" },
   ];
 
   console.log("Security Sentinel — Tool Check\n");
@@ -529,13 +536,13 @@ export async function runSecurityScan(mode: Mode): Promise<ScanOutput> {
   }
 
   if (mode === "daily" || mode === "deep") {
-    console.log("Running security tools (nmap, nuclei, trufflehog, trivy)...");
+    console.log("Running security tools (nmap, nuclei, trufflehog, trivy, semgrep, gitleaks, grype, checkdmarc, httpx, lynis)...");
     const toolResults = await runDailyTools();
     allResults.push(...toolResults);
   }
 
   if (mode === "deep") {
-    console.log("Running deep TLS audit (testssl.sh)...");
+    console.log("Running deep TLS audit (testssl.sh, sslyze)...");
     const weeklyResults = await runWeeklyTools();
     allResults.push(...weeklyResults);
   }

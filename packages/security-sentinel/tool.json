@@ -1,11 +1,11 @@
 {
   "name": "security-sentinel",
   "displayName": "Security Sentinel",
-  "description": "Autonomous security scanning agent for VPS and web infrastructure. 80+ checks across auth, TLS, headers, VPS hardening, API credentials, and dependencies. SOC2, HIPAA, and PCI-DSS compliance reporting. Optional AI analysis via Ollama or Claude API.",
-  "version": "1.0.0",
+  "description": "Autonomous security scanning agent for VPS and web infrastructure. 90+ checks across 12 tools covering auth, TLS, headers, VPS hardening, API credentials, dependencies, SAST, secrets, email security, HTTP recon, and host hardening. SOC2, HIPAA, and PCI-DSS compliance reporting. Optional AI analysis via Ollama or Claude API.",
+  "version": "2.0.0",
   "author": "tk-47",
   "category": "security",
-  "tags": ["security", "scanner", "vps", "compliance", "soc2", "hipaa", "pci-dss", "nmap", "nuclei", "ollama"],
+  "tags": ["security", "scanner", "vps", "compliance", "soc2", "hipaa", "pci-dss", "nmap", "nuclei", "semgrep", "gitleaks", "grype", "sslyze", "lynis", "httpx", "ollama"],
   "dependencies": [],
   "files": [
     "prompt.md",
@@ -27,6 +27,7 @@
     "VPS_SSH_KEY",
     "DOMAIN",
     "WEBHOOK_ENDPOINTS",
+    "HTTPX_TARGETS",
     "TELEGRAM_BOT_TOKEN",
     "TELEGRAM_USER_ID",
     "ANTHROPIC_API_KEY"
