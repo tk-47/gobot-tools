@@ -209,4 +209,4 @@ Every tool's `prompt.md` works on its own. If you don't want to use the CLI:
 
 ## About
 
-Built by [tk-47](https://github.com/tk-47) for the Autonomee community. These tools power [Claudebot](https://github.com/tk-47/go-telegram-bot) — an always-on AI Telegram agent with persistent memory, proactive check-ins, morning briefings, and a board of specialist agents.
+Built by [tk-47](https://github.com/tk-47) for the Autonomee community. These tools power [Claudebot](https://github.com/tk-47/go-telegram-bot) — an always-on AI Telegram agent originally built by GodaGo with persistent memory, proactive check-ins, morning briefings, and a board of specialist agents.
