@@ -1,7 +1,39 @@
 {
   "version": "1.0.0",
-  "generatedAt": "2026-02-26T23:29:12.138Z",
+  "generatedAt": "2026-02-28T00:00:00.000Z",
   "tools": [
+    {
+      "name": "apple-health",
+      "displayName": "Apple Watch + Health Agent",
+      "description": "Connect your iPhone and Apple Watch to your bot for sleep, HRV, readiness, activity, and vitals. Uses the free Health Auto Export app as a bridge. Works standalone or alongside Oura Ring. Includes a Health Agent for biometric insights, medication lookups, and symptom guidance.",
+      "version": "1.0.0",
+      "author": "tk-47",
+      "category": "health",
+      "tags": [
+        "apple-watch",
+        "apple-health",
+        "sleep",
+        "health",
+        "biometrics",
+        "hrv",
+        "readiness",
+        "wellness",
+        "wearable",
+        "ios",
+        "healthkit"
+      ],
+      "dependencies": [],
+      "files": [
+        "prompt.md",
+        "README.md",
+        ".env.example",
+        "src/apple-health.ts"
+      ],
+      "envVars": [
+        "APPLE_HEALTH_WEBHOOK_SECRET"
+      ],
+      "postInstall": "Open prompt.md in Claude Code and say: \"Set up Apple Watch health integration\""
+    },
     {
       "name": "fireflies",
       "displayName": "Fireflies.ai Meeting Transcripts",
