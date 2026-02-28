@@ -116,20 +116,21 @@ def cmd_summary(target_date=None):
     d = target_date or today_str()
     result = {"date": d}
 
-    # Body Battery
+    # Body Battery — parse time-series values array
     try:
         bb_data = client.get_body_battery(d, d)
         if bb_data and isinstance(bb_data, list):
             levels = []
             for entry in bb_data:
-                if isinstance(entry, dict):
-                    for key in ("charged", "level", "bodyBattery"):
-                        val = entry.get(key)
+                if not isinstance(entry, dict):
+                    continue
+                # bodyBatteryValuesArray: list of [timestamp_ms, value] pairs
+                values_array = entry.get("bodyBatteryValuesArray") or []
+                for pair in values_array:
+                    if isinstance(pair, (list, tuple)) and len(pair) >= 2:
+                        val = pair[1]
                         if val is not None:
                             levels.append(int(val))
-                            break
-                elif isinstance(entry, (int, float)):
-                    levels.append(int(entry))
             if levels:
                 result["body_battery"] = {
                     "max": max(levels),
