@@ -118,9 +118,50 @@ If you have both, the Health Agent uses both sources simultaneously:
 
 ---
 
+## How the Data Flows
+
+Understanding exactly where your health data goes is important. Here's the full picture:
+
+```
+Apple Watch
+    ↓  (Bluetooth)
+iPhone HealthKit
+    ↓  (Health Auto Export reads from HealthKit)
+Health Auto Export app
+    ↓  (HTTPS POST, secret-authenticated)
+Your bot's webhook endpoint  (/webhook/apple-health)
+    ↓  (parsed + stored locally)
+./data/apple-health.json  (on your machine or VPS)
+    ↓  (read on demand)
+Health Agent (Claude)  →  your Telegram chat
+```
+
+**What this means in practice:**
+
+- Your Apple Watch syncs to your iPhone as normal — nothing changes there
+- Health Auto Export reads from Apple's HealthKit on your phone and sends a JSON payload to your webhook URL
+- Your webhook is your own server (local Mac via Cloudflare tunnel, or your VPS) — no intermediary
+- Data is stored in a single JSON file on your machine, never in a shared database
+- The Health Agent reads from that local file when you ask a health question — it does not fetch from Apple, HealthKit, or any external service
+- Claude processes your data the same way it processes any message you send — transiently, not stored by Anthropic beyond their standard retention policy
+
+**What never happens:**
+
+- Your health data does not go to Apple's servers via this integration (HealthKit is local)
+- Your health data does not go to Anthropic's servers at rest — only transiently during inference
+- Health Auto Export does not retain or transmit your data to their servers (per their privacy policy)
+- No third-party health platform (Fitbit, Garmin Connect, Google Fit, etc.) is involved
+
+---
+
 ## Privacy
 
-- Health Auto Export sends data directly from your phone to your bot's webhook
-- Data is stored locally in `./data/apple-health.json` — on your machine or VPS, not any third-party server
-- No Apple ID, iCloud credentials, or OAuth flow required
-- Health Auto Export's privacy policy: they do not transmit your health data to their servers
+**Endpoint security:** The `/webhook/apple-health` endpoint rejects any request without the correct `x-webhook-secret` header — brute-forcing is not practical with a 32-byte random secret.
+
+**Local storage only:** `./data/apple-health.json` holds the last 14 days of daily snapshots. It lives on your machine or VPS. Delete it any time to wipe all stored health data.
+
+**Minimal data:** Only the metrics you select in Health Auto Export are included in the payload. You are in full control of what leaves your phone.
+
+**No Apple credentials:** This integration never touches your Apple ID, iCloud account, or any Apple API. Health Auto Export reads from the local HealthKit database on your device only.
+
+**No OAuth:** Unlike most health integrations, there is no authorization flow, no access tokens to manage, and no third-party account to create. The only credential is the webhook secret you generate yourself.
