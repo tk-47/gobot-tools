@@ -97,6 +97,18 @@ Connect your bot to an Oura Ring and add a Health Agent to the board. Biometric 
 - **Setup time:** ~5 minutes
 - **Requires:** `OURA_ACCESS_TOKEN`
 
+### [Apple Watch + Health Agent](packages/apple-health) — `gobot-tools install apple-health`
+
+Connect your iPhone and Apple Watch to your bot using the free Health Auto Export app. No Apple API token required — data is pushed directly from your phone. Works standalone or alongside Oura Ring.
+
+- Sleep stages (Deep, REM, Core), efficiency, bedtime/wake time
+- HRV, resting heart rate, SpO₂, wrist temperature, VO₂ Max
+- Steps, active calories, exercise minutes, stand hours
+- Computed readiness score (proxy for Oura's readiness, no subscription needed)
+- If you don't wear your watch to bed, the Health Agent automatically uses Oura (or any other source) for sleep data
+- **Setup time:** ~5 minutes
+- **Requires:** `APPLE_HEALTH_WEBHOOK_SECRET`
+
 ---
 
 ## Messaging
