@@ -109,6 +109,17 @@ Connect your iPhone and Apple Watch to your bot using the free Health Auto Expor
 - **Setup time:** ~5 minutes
 - **Requires:** `APPLE_HEALTH_WEBHOOK_SECRET`
 
+### [Garmin Connect + Health Agent](packages/garmin) — `gobot-tools install garmin`
+
+Connect your Garmin device to your bot for workout data, training insights, sleep tracking, and daily health metrics. Uses the community `garminconnect` library — no developer registration required.
+
+- Body Battery, training readiness, VO₂ max, and training status
+- All activity types: running, cycling, swimming, strength, hiking, and more
+- Sleep stages, steps, resting heart rate, and stress data
+- Works alongside Oura and Apple Watch — all three sources complement each other; the Health Agent pulls from whichever has data for any given metric
+- **Setup time:** ~10 minutes
+- **Requires:** `GARMIN_EMAIL`, `GARMIN_PASSWORD` (for initial setup only — tokens cached after first login)
+
 ---
 
 ## Messaging
