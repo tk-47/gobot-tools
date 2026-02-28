@@ -69,6 +69,21 @@ ollama pull qwen3:8b
 
 Security Sentinel gracefully handles missing tools — checks that require them are skipped with an informational note rather than failing.
 
+### Updating
+
+If you installed via `gobot-tools`, pull the latest version with:
+
+```bash
+gobot-tools update security-sentinel
+```
+
+If you cloned the standalone repo directly, pull from GitHub:
+
+```bash
+git pull
+bun install
+```
+
 ---
 
 ## How It Runs

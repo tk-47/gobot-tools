@@ -200,6 +200,7 @@ gobot-tools search <query>      Search by name, category, or keyword
 gobot-tools info <tool>         Show details, env vars, dependencies
 gobot-tools install <tool>      Download tool into your project
 gobot-tools uninstall <tool>    Remove an installed tool
+gobot-tools update [tool]       Update a tool, or all installed tools
 ```
 
 ## How It Works
@@ -209,6 +210,13 @@ gobot-tools uninstall <tool>    Remove an installed tool
 3. **Open `prompt.md` in Claude Code** — Claude walks you through API keys, code changes, testing, and deployment
 
 Tools are standalone — install only what you need. Some tools list dependencies (e.g., `teams` depends on `ms365`), and the CLI will tell you if you need to install something first.
+
+When a tool receives a bug fix or new feature, update it with:
+
+```bash
+gobot-tools update security-sentinel   # update one tool
+gobot-tools update                     # update all installed tools
+```
 
 ## Using Without the CLI
 
