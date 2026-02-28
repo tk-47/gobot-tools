@@ -8,19 +8,23 @@ const CONFIG_FILE = join(CONFIG_DIR, "config.json");
 export interface Config {
   projectDir: string;
   installedTools: string[];
+  installedVersions: Record<string, string>;
 }
 
 function defaultConfig(): Config {
   return {
     projectDir: "",
     installedTools: [],
+    installedVersions: {},
   };
 }
 
 export function loadConfig(): Config {
   if (!existsSync(CONFIG_FILE)) return defaultConfig();
   try {
-    return JSON.parse(readFileSync(CONFIG_FILE, "utf-8"));
+    const raw = JSON.parse(readFileSync(CONFIG_FILE, "utf-8"));
+    // Backwards-compat: existing configs won't have installedVersions
+    return { installedVersions: {}, ...raw };
   } catch {
     return defaultConfig();
   }

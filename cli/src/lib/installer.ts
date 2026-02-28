@@ -28,11 +28,12 @@ export async function installTool(tool: ToolManifest): Promise<void> {
     writeFileSync(dest, content);
   }
 
-  // Track installation
+  // Track installation + version
   if (!config.installedTools.includes(tool.name)) {
     config.installedTools.push(tool.name);
-    saveConfig(config);
   }
+  config.installedVersions[tool.name] = tool.version;
+  saveConfig(config);
 }
 
 export function uninstallTool(toolName: string): void {
@@ -50,10 +51,16 @@ export function uninstallTool(toolName: string): void {
   }
 
   config.installedTools = config.installedTools.filter((t) => t !== toolName);
+  delete config.installedVersions[toolName];
   saveConfig(config);
 }
 
 export function isInstalled(toolName: string): boolean {
   const config = loadConfig();
   return config.installedTools.includes(toolName);
+}
+
+export function getInstalledVersion(toolName: string): string | undefined {
+  const config = loadConfig();
+  return config.installedVersions[toolName];
 }

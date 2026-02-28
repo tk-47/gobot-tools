@@ -1,6 +1,6 @@
 {
   "name": "security-sentinel",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Autonomous security scanning agent for VPS and web infrastructure",
   "type": "module",
   "scripts": {

@@ -6,13 +6,14 @@ import { searchCommand } from "./commands/search.js";
 import { infoCommand } from "./commands/info.js";
 import { installCommand } from "./commands/install.js";
 import { uninstallCommand } from "./commands/uninstall.js";
+import { updateCommand } from "./commands/update.js";
 
 const program = new Command();
 
 program
   .name("gobot-tools")
   .description("CLI marketplace for Autonomee community bot tools")
-  .version("1.0.0");
+  .version("1.1.0");
 
 program
   .command("init")
@@ -43,5 +44,10 @@ program
   .command("uninstall <tool>")
   .description("Remove an installed tool")
   .action(uninstallCommand);
+
+program
+  .command("update [tool]")
+  .description("Update an installed tool, or all installed tools if no name given")
+  .action(updateCommand);
 
 program.parse();
