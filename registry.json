@@ -35,6 +35,38 @@
       "postInstall": "Open prompt.md in Claude Code and say: \"Set up Apple Watch health integration\""
     },
     {
+      "name": "garmin",
+      "displayName": "Garmin Connect",
+      "description": "Connect to Garmin Connect for exercise data, running workouts, training load, Body Battery, and VO2 max. Designed to complement Oura Ring (sleep) and Apple Health (steps). Uses the garminconnect Python library with OAuth token caching — no official API key required.",
+      "version": "1.0.0",
+      "author": "tk-47",
+      "category": "health",
+      "tags": [
+        "garmin",
+        "running",
+        "exercise",
+        "fitness",
+        "training",
+        "body-battery",
+        "vo2max",
+        "wearable",
+        "cycling",
+        "workout"
+      ],
+      "dependencies": [],
+      "files": [
+        "prompt.md",
+        "README.md",
+        ".env.example",
+        "src/garmin.py"
+      ],
+      "envVars": [
+        "GARMIN_EMAIL",
+        "GARMIN_PASSWORD"
+      ],
+      "postInstall": "Open prompt.md in Claude Code and say: \"Set up Garmin Connect integration\""
+    },
+    {
       "name": "fireflies",
       "displayName": "Fireflies.ai Meeting Transcripts",
       "description": "Auto-capture meeting summaries and action items from Fireflies.ai. Stores summaries as memory facts and action items as trackable goals with Telegram notifications.",
