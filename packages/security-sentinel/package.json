@@ -1,6 +1,6 @@
 {
   "name": "security-sentinel",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Autonomous security scanning agent for VPS and web infrastructure",
   "type": "module",
   "scripts": {
@@ -11,7 +11,15 @@
     "compliance": "bun run src/index.ts compliance",
     "install-check": "bun run src/index.ts install"
   },
-  "keywords": ["security", "scanner", "vps", "compliance", "soc2", "hipaa", "pci-dss"],
+  "keywords": [
+    "security",
+    "scanner",
+    "vps",
+    "compliance",
+    "soc2",
+    "hipaa",
+    "pci-dss"
+  ],
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^25.3.1",
