@@ -35,6 +35,34 @@
       "postInstall": "Open prompt.md in Claude Code and say: \"Set up Apple Watch health integration\""
     },
     {
+      "name": "apple-notes-calendar",
+      "displayName": "Apple Notes + Calendar",
+      "description": "Read and write Apple Notes, and read Apple Calendar events directly from your Mac — no API keys, no cloud sync, no auth tokens. Uses macOS Automation (JXA) to give your bot access to local Notes.app and Calendar.app.",
+      "version": "1.0.0",
+      "author": "tk-47",
+      "category": "integrations",
+      "tags": [
+        "apple",
+        "notes",
+        "calendar",
+        "macos",
+        "jxa",
+        "osascript",
+        "productivity",
+        "local"
+      ],
+      "dependencies": [],
+      "files": [
+        "prompt.md",
+        "README.md",
+        ".env.example",
+        "src/apple-native.ts",
+        "src/apple-native-cli.ts"
+      ],
+      "envVars": [],
+      "postInstall": "Open prompt.md in Claude Code and say: \"Set up Apple Notes and Calendar integration\""
+    },
+    {
       "name": "garmin",
       "displayName": "Garmin Connect",
       "description": "Connect to Garmin Connect for exercise data, running workouts, training load, Body Battery, and VO2 max. Designed to complement Oura Ring (sleep) and Apple Health (steps). Uses the garminconnect Python library with OAuth token caching \u2014 no official API key required.",

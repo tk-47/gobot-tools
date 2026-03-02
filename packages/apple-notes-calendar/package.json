@@ -1,0 +1,7 @@
+{
+  "name": "@tk-47/apple-notes-calendar",
+  "version": "1.0.0",
+  "description": "Apple Notes and Calendar integration for Claudebot — macOS JXA, no API keys required",
+  "author": "tk-47",
+  "license": "MIT"
+}
