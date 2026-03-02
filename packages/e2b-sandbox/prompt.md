@@ -59,7 +59,24 @@ bot.command("run", async (ctx) => {
 });
 ```
 
-## Step 4 — Add run_code action tag (optional — for Claude-initiated execution)
+## Step 4 — Tell Claude when to use the sandbox
+
+In `src/agents/base.ts`, find the `BASE_CONTEXT` string and add (or replace any existing sandbox note) with:
+
+```
+- CODE EXECUTION (Python sandbox):
+  Ask: would a Python programmer write a script for this rather than doing it by hand?
+  If yes, use the sandbox. This means: the user has provided actual data (rows, a CSV,
+  a list of numbers, exported records) and wants it processed, aggregated, filtered,
+  or analyzed. Examples that qualify: correlation between two data series, grouping
+  transactions by category, finding trends across 90 days of health data.
+  Examples that do NOT qualify: loan payment formula, unit conversion, percentage math,
+  any calculation with a handful of clean scalar inputs — answer those directly.
+  [ACTION:run_code {"code": "python code here", "description": "one-line description"}]
+  The user must approve before it runs. Cost: ~$0.0001/run.
+```
+
+## Step 5 — Add run_code action tag (optional — for Claude-initiated execution)
 
 In `src/lib/action-tags.ts`, add this import near the top:
 ```typescript
@@ -137,7 +154,7 @@ bot.callbackQuery("confirm_run", async (ctx) => {
 });
 ```
 
-## Step 5 — Test it
+## Step 6 — Test it
 
 Restart your bot and try:
 
