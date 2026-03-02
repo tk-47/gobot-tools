@@ -8,6 +8,21 @@ This is one of the most direct upgrades you can give an AI assistant: close the 
 
 ---
 
+## What You Can Do With It
+
+The E2B sandbox runs Python 3 with the standard library. Common uses:
+
+| Ask your bot... | What happens |
+|-----------------|--------------|
+| "If I invest $2,000/month at 7% for 25 years, what do I end up with?" | Claude writes and runs the calculation, returns the exact figure |
+| "Parse this CSV and tell me which category had the highest total" | Claude processes the data, returns the answer |
+| "Does this regex match my input?" | Claude runs it against your string, tells you what it captures |
+| "What day of the week is Easter 2031?" | Claude computes it, doesn't guess |
+| "Sort these names and remove duplicates" | Returns the actual cleaned list |
+| `/run <your own script>` | Runs whatever you send, returns stdout/stderr |
+
+---
+
 ## Why This Matters
 
 Most AI tools can write code. Very few can run it. The gap between those two things is larger than it sounds.
@@ -22,21 +37,6 @@ When Claude can run code, the dynamic changes:
 - **Complex tasks become tractable.** Multi-step data processing, text transformations, schedule calculations — Claude can work through them iteratively with real feedback instead of writing a wall of code and hoping.
 
 The sandbox also means none of this touches your machine. Code runs in an isolated cloud VM that is destroyed the moment it finishes. Nothing can reach your filesystem, your environment variables, or your bot's processes.
-
----
-
-## What You Can Do With It
-
-The E2B sandbox runs Python 3 with the standard library. Common uses:
-
-| Ask your bot... | What happens |
-|-----------------|--------------|
-| "If I invest $2,000/month at 7% for 25 years, what do I end up with?" | Claude writes and runs the calculation, returns the exact figure |
-| "Parse this CSV and tell me which category had the highest total" | Claude processes the data, returns the answer |
-| "Does this regex match my input?" | Claude runs it against your string, tells you what it captures |
-| "What day of the week is Easter 2031?" | Claude computes it, doesn't guess |
-| "Sort these names and remove duplicates" | Returns the actual cleaned list |
-| `/run <your own script>` | Runs whatever you send, returns stdout/stderr |
 
 ---
 
