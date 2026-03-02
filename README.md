@@ -82,6 +82,19 @@ Real-time flight tracking via FlightAware AeroAPI. Look up any flight, set up ac
 - **Setup time:** ~10 minutes
 - **Requires:** `FLIGHTAWARE_API_KEY`
 
+### [E2B Code Sandbox](packages/e2b-sandbox) — `gobot-tools install e2b-sandbox`
+
+Execute Python code in isolated cloud sandboxes via [E2B](https://e2b.dev). Adds a `/run` command for direct execution and a Claude-initiated confirmation flow — Claude can write code, propose running it, and report real results back to chat. Each execution runs in a fresh Firecracker microVM that is destroyed the moment it finishes. No local Docker required.
+
+- `/run <code>` — execute Python directly from Telegram, get stdout/stderr back instantly
+- Claude-proposed execution — Claude generates `[ACTION:run_code]` tags; you confirm with a button tap
+- Useful for: calculations, data processing, text manipulation, quick scripts, algorithmic problems
+- Ephemeral VMs — no filesystem state between runs, no outbound network access from code
+- Daily limit on Claude-initiated runs (default 20/day, configurable)
+- **New accounts receive $100 in free credits** — typical personal use lasts months before any charges
+- **Setup time:** ~5 minutes
+- **Requires:** `E2B_API_KEY`, `SANDBOX_ENABLED=true`
+
 ---
 
 ## Health

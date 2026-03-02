@@ -1,0 +1,7 @@
+{
+  "name": "@gobot-tools/e2b-sandbox",
+  "version": "1.0.0",
+  "description": "Python code execution in an isolated E2B Firecracker sandbox for Claudebot",
+  "author": "tk-47",
+  "license": "MIT"
+}

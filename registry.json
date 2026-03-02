@@ -376,6 +376,37 @@
       "postInstall": "Open prompt.md in Claude Code and say: \"Set up voice interface\""
     },
     {
+      "name": "e2b-sandbox",
+      "displayName": "E2B Code Sandbox",
+      "description": "Execute Python code in isolated Firecracker microVMs via E2B. Adds a /run command for direct execution and a Claude-initiated confirmation flow for AI-proposed code. Ephemeral, network-isolated sandboxes — no local Docker required.",
+      "version": "1.0.0",
+      "author": "tk-47",
+      "category": "integrations",
+      "tags": [
+        "code-execution",
+        "python",
+        "sandbox",
+        "e2b",
+        "firecracker",
+        "repl",
+        "data-analysis",
+        "scripting"
+      ],
+      "dependencies": [],
+      "files": [
+        "prompt.md",
+        "README.md",
+        ".env.example",
+        "src/sandbox.ts"
+      ],
+      "envVars": [
+        "E2B_API_KEY",
+        "SANDBOX_ENABLED",
+        "SANDBOX_AUTO_RUN_DAILY_LIMIT"
+      ],
+      "postInstall": "Open prompt.md in Claude Code and say: \"Set up E2B code sandbox\""
+    },
+    {
       "name": "vps-hardening",
       "displayName": "VPS Hardening",
       "description": "A 9-phase VPS security hardening prompt. SSH lockdown, Fail2Ban with progressive bans, UFW firewall, Cloudflare origin protection, Docker-aware rules, auto-updates, and more.",
