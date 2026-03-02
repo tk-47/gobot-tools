@@ -196,7 +196,7 @@ function formatTelegramAlert(report: ScanReport & { mode: string }, diff: ScanDi
     lines.push("");
     lines.push("<b>New failures:</b>");
     for (const f of diff.new_failures.slice(0, 5)) {
-      lines.push(`• [${f.severity.toUpperCase()}] ${f.name}`);
+      lines.push(`• [${f.severity.toUpperCase()}] ${f.name}: ${f.details}`);
     }
   }
 

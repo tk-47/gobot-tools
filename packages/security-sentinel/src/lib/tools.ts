@@ -90,7 +90,7 @@ export async function runNmap(): Promise<ScanResult[]> {
   // 8080, 8443, 9229 all appear "open" externally despite nothing listening
   // and UFW deny rules in place. Only ss -tlnp via SSH gives accurate results.
   if (!VPS_HOST || !VPS_USER || !VPS_KEY) {
-    results.push(ok("ports_nmap", "PORTS", "No unexpected listening ports (VPS internal)",
+    results.push(ok("ports_nmap", "PORTS", "Unexpected open ports (nmap)",
       false, "low", "VPS_SSH_HOST/VPS_SSH_USER/VPS_SSH_KEY not configured",
       ["PCI:11.3"]
     ));
@@ -107,7 +107,7 @@ export async function runNmap(): Promise<ScanResult[]> {
   ], 30_000);
 
   if (exitCode !== 0 || !stdout.trim()) {
-    results.push(ok("ports_nmap", "PORTS", "No unexpected listening ports (VPS internal)",
+    results.push(ok("ports_nmap", "PORTS", "Unexpected open ports (nmap)",
       false, "medium",
       `SSH port check failed (exit ${exitCode}): ${(stderr || stdout).substring(0, 200)}`,
       ["PCI:11.3"],
@@ -134,7 +134,7 @@ export async function runNmap(): Promise<ScanResult[]> {
     }
   }
 
-  results.push(ok("ports_nmap", "PORTS", "No unexpected listening ports (VPS internal)",
+  results.push(ok("ports_nmap", "PORTS", "Unexpected open ports (nmap)",
     true, "info",
     `${listeningPorts.length} port(s) listening: ${listeningPorts.map((p) => `${p.port}/${p.process}`).join(", ")}`,
     ["PCI:11.3"]
@@ -150,7 +150,7 @@ export async function runNmap(): Promise<ScanResult[]> {
   ];
 
   const unexpected = listeningPorts.filter((p) => DANGEROUS_INTERNAL.includes(p.port));
-  results.push(ok("ports_nmap_unexpected", "PORTS", "No unexpected listening ports (VPS internal)",
+  results.push(ok("ports_nmap_unexpected", "PORTS", "Unexpected open ports (nmap)",
     unexpected.length === 0, unexpected.length > 0 ? "high" : "info",
     unexpected.length === 0
       ? `All ${listeningPorts.length} listening port(s) are expected`
@@ -162,7 +162,7 @@ export async function runNmap(): Promise<ScanResult[]> {
   const debugListeners = listeningPorts.filter((p) =>
     [3001, 4000, 5000, 8080, 8443, 8888, 9229, 5432, 6379, 27017].includes(p.port)
   );
-  results.push(ok("ports_nmap_debug", "PORTS", "No debug/dev ports listening on VPS",
+  results.push(ok("ports_nmap_debug", "PORTS", "Debug/dev ports on VPS",
     debugListeners.length === 0, debugListeners.length > 0 ? "critical" : "info",
     debugListeners.length === 0
       ? "No debug or database ports are listening"
@@ -219,7 +219,7 @@ export async function runNuclei(): Promise<ScanResult[]> {
   const highs = findings.filter((f) => f.info.severity === "high");
   const mediums = findings.filter((f) => f.info.severity === "medium");
 
-  results.push(ok("vuln_nuclei_critical", "VULN", "No critical vulnerabilities (Nuclei)",
+  results.push(ok("vuln_nuclei_critical", "VULN", "Critical vulnerabilities (Nuclei)",
     criticals.length === 0, "critical",
     criticals.length === 0 ? "No critical findings"
       : `${criticals.length} critical: ${criticals.map((f) => f.info.name).join(", ")}`,
@@ -227,7 +227,7 @@ export async function runNuclei(): Promise<ScanResult[]> {
     criticals.length > 0 ? criticals.map((f) => `${f["template-id"]}: ${f.info.name}`).join("; ") : undefined
   ));
 
-  results.push(ok("vuln_nuclei_high", "VULN", "No high-severity vulnerabilities (Nuclei)",
+  results.push(ok("vuln_nuclei_high", "VULN", "High vulnerabilities (Nuclei)",
     highs.length === 0, "high",
     highs.length === 0 ? "No high-severity findings"
       : `${highs.length} high: ${highs.map((f) => f.info.name).join(", ")}`,
@@ -284,7 +284,7 @@ export async function runTestSSL(): Promise<ScanResult[]> {
     const vulnProtocols = findings.filter((f: any) =>
       f.id?.match(/^(SSLv2|SSLv3|TLS1$|TLS1_1)/) && f.severity === "CRITICAL" || f.severity === "HIGH"
     );
-    results.push(ok("tls_deep_protocols", "TLS_DEEP", "No vulnerable TLS protocols (SSLv2/3, TLS 1.0/1.1)",
+    results.push(ok("tls_deep_protocols", "TLS_DEEP", "Vulnerable TLS protocols (testssl.sh)",
       vulnProtocols.length === 0, "high",
       vulnProtocols.length === 0
         ? "Only secure protocols enabled"
@@ -303,7 +303,7 @@ export async function runTestSSL(): Promise<ScanResult[]> {
       if (f.id?.match(/^BEAST/)) return false;
       return true;
     });
-    results.push(ok("tls_deep_vulns", "TLS_DEEP", "No known TLS vulnerabilities",
+    results.push(ok("tls_deep_vulns", "TLS_DEEP", "Known TLS vulnerabilities (testssl.sh)",
       knownVulns.length === 0, knownVulns.some((f: any) => f.severity === "CRITICAL") ? "critical" : "high",
       knownVulns.length === 0
         ? "No Heartbleed, POODLE, ROBOT, etc."
@@ -369,7 +369,7 @@ export async function runTruffleHog(): Promise<ScanResult[]> {
     } catch {}
   }
 
-  results.push(ok("secrets_trufflehog_verified", "SECRETS", "No verified active secrets in codebase",
+  results.push(ok("secrets_trufflehog_verified", "SECRETS", "Verified active secrets (TruffleHog)",
     secrets.length === 0, secrets.length > 0 ? "critical" : "info",
     secrets.length === 0
       ? "No verified secrets found"
@@ -420,7 +420,7 @@ export async function runTrivy(): Promise<ScanResult[]> {
     const criticals = allVulns.filter((v) => v.severity === "CRITICAL");
     const highs = allVulns.filter((v) => v.severity === "HIGH");
 
-    results.push(ok("deps_trivy_critical", "DEPS", "No critical vulnerabilities (Trivy)",
+    results.push(ok("deps_trivy_critical", "DEPS", "Critical vulnerabilities (Trivy)",
       criticals.length === 0, "critical",
       criticals.length === 0 ? "No critical vulns in filesystem scan"
         : `${criticals.length} critical: ${criticals.slice(0, 3).map((v) => `${v.pkg}:${v.id}`).join(", ")}`,
@@ -428,7 +428,7 @@ export async function runTrivy(): Promise<ScanResult[]> {
       criticals.length > 0 ? criticals.map((v) => `${v.pkg}:${v.id}`).join("; ") : undefined
     ));
 
-    results.push(ok("deps_trivy_high", "DEPS", "No high-severity vulnerabilities (Trivy)",
+    results.push(ok("deps_trivy_high", "DEPS", "High vulnerabilities (Trivy)",
       highs.length === 0, "high",
       highs.length === 0 ? "No high-severity vulns"
         : `${highs.length} high: ${highs.slice(0, 3).map((v) => `${v.pkg}:${v.id}`).join(", ")}`,
@@ -486,7 +486,7 @@ export async function runGitleaks(): Promise<ScanResult[]> {
     }
   } catch {}
 
-  results.push(ok("secrets_gitleaks_leaks", "SECRETS", "No secrets detected (Gitleaks)",
+  results.push(ok("secrets_gitleaks_leaks", "SECRETS", "Secrets detected (Gitleaks)",
     leaks.length === 0, leaks.length > 0 ? "critical" : "info",
     leaks.length === 0
       ? "No secrets found"
@@ -588,7 +588,7 @@ export async function runGrype(): Promise<ScanResult[]> {
     const criticals = matches.filter((m: any) => m.vulnerability?.severity === "Critical");
     const highs = matches.filter((m: any) => m.vulnerability?.severity === "High");
 
-    results.push(ok("deps_grype_critical", "DEPS", "No critical vulnerabilities (Grype)",
+    results.push(ok("deps_grype_critical", "DEPS", "Critical vulnerabilities (Grype)",
       criticals.length === 0, "critical",
       criticals.length === 0 ? "No critical vulns (fixable)"
         : `${criticals.length} critical: ${criticals.slice(0, 3).map((m: any) => `${m.artifact?.name}:${m.vulnerability?.id}`).join(", ")}`,
@@ -596,7 +596,7 @@ export async function runGrype(): Promise<ScanResult[]> {
       criticals.length > 0 ? criticals.map((m: any) => `${m.artifact?.name}:${m.vulnerability?.id}`).join("; ") : undefined
     ));
 
-    results.push(ok("deps_grype_high", "DEPS", "No high-severity vulnerabilities (Grype)",
+    results.push(ok("deps_grype_high", "DEPS", "High vulnerabilities (Grype)",
       highs.length === 0, "high",
       highs.length === 0 ? "No high-severity vulns (fixable)"
         : `${highs.length} high: ${highs.slice(0, 3).map((m: any) => `${m.artifact?.name}:${m.vulnerability?.id}`).join(", ")}`,
@@ -650,7 +650,7 @@ export async function runSemgrep(): Promise<ScanResult[]> {
     const errors = findings.filter((f: any) => f.extra?.severity === "ERROR");
     const warnings = findings.filter((f: any) => f.extra?.severity === "WARNING");
 
-    results.push(ok("sast_semgrep_error", "SAST", "No high-severity SAST findings (Semgrep)",
+    results.push(ok("sast_semgrep_error", "SAST", "High-severity SAST findings (Semgrep)",
       errors.length === 0, "high",
       errors.length === 0 ? "No ERROR-level findings"
         : `${errors.length} error(s): ${errors.slice(0, 3).map((f: any) => f.check_id).join(", ")}`,
@@ -658,7 +658,7 @@ export async function runSemgrep(): Promise<ScanResult[]> {
       errors.length > 0 ? errors.slice(0, 5).map((f: any) => `${f.check_id}: ${f.path}:${f.start?.line}`).join("; ") : undefined
     ));
 
-    results.push(ok("sast_semgrep_warning", "SAST", "No medium-severity SAST findings (Semgrep)",
+    results.push(ok("sast_semgrep_warning", "SAST", "Medium-severity SAST findings (Semgrep)",
       warnings.length === 0, "medium",
       warnings.length === 0 ? "No WARNING-level findings"
         : `${warnings.length} warning(s): ${warnings.slice(0, 3).map((f: any) => f.check_id).join(", ")}`,
@@ -740,7 +740,7 @@ export async function runHttpx(): Promise<ScanResult[]> {
     const server = p.webserver || "";
     return server && /\d+\.\d+/.test(server);
   });
-  results.push(ok("recon_httpx_server_header", "RECON", "No server version leaks in headers",
+  results.push(ok("recon_httpx_server_header", "RECON", "Server version leaks in headers",
     leakyServers.length === 0, leakyServers.length > 0 ? "medium" : "info",
     leakyServers.length === 0
       ? "No version info leaked in Server headers"
@@ -805,7 +805,7 @@ export async function runSSLyze(): Promise<ScanResult[]> {
         deprecatedProtos.push(proto.replace(/_/g, "."));
       }
     }
-    results.push(ok("tls_sslyze_deprecated", "TLS_DEEP", "No deprecated TLS protocols (SSLyze)",
+    results.push(ok("tls_sslyze_deprecated", "TLS_DEEP", "Deprecated TLS protocols (SSLyze)",
       deprecatedProtos.length === 0, deprecatedProtos.length > 0 ? "high" : "info",
       deprecatedProtos.length === 0
         ? "No deprecated protocols accepted"
@@ -938,14 +938,14 @@ export async function runLynis(): Promise<ScanResult[]> {
   }
 
   if (warningCount > 0) {
-    results.push(ok("host_lynis_warnings", "HOST", "No Lynis warnings on VPS",
+    results.push(ok("host_lynis_warnings", "HOST", "Lynis warnings (VPS)",
       false, warningCount > 5 ? "high" : "medium",
       `${warningCount} warning(s) from Lynis audit`,
       ["SOC2:CC6.1", "PCI:2.2"],
       `${warningCount} warnings`
     ));
   } else {
-    results.push(ok("host_lynis_warnings", "HOST", "No Lynis warnings on VPS",
+    results.push(ok("host_lynis_warnings", "HOST", "Lynis warnings (VPS)",
       true, "info",
       "No warnings from Lynis audit",
       ["SOC2:CC6.1"]

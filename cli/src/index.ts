@@ -13,7 +13,7 @@ const program = new Command();
 program
   .name("gobot-tools")
   .description("CLI marketplace for Autonomee community bot tools")
-  .version("1.1.0");
+  .version("1.1.1");
 
 program
   .command("init")

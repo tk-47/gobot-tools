@@ -69,7 +69,7 @@ export async function checkShodan(): Promise<ScanResult[]> {
     }
 
     const unexpectedPorts = (data as ShodanResult).ports.filter((p) => !EXPECTED_PORTS.includes(p));
-    results.push(ok("recon_shodan_ports", "RECON", "No unexpected ports visible to Shodan",
+    results.push(ok("recon_shodan_ports", "RECON", "Unexpected ports visible to Shodan",
       unexpectedPorts.length === 0, unexpectedPorts.length > 0 ? "high" : "info",
       unexpectedPorts.length === 0
         ? `Open ports: ${data.ports.join(", ")} (all expected)`
@@ -78,7 +78,7 @@ export async function checkShodan(): Promise<ScanResult[]> {
       `All ports: ${data.ports.join(", ")}`
     ));
 
-    results.push(ok("recon_shodan_vulns", "RECON", "No known vulnerabilities on VPS IP (Shodan)",
+    results.push(ok("recon_shodan_vulns", "RECON", "Known vulnerabilities on VPS IP (Shodan)",
       data.vulns.length === 0, data.vulns.length > 0 ? "critical" : "info",
       data.vulns.length === 0
         ? "No known vulns detected"
@@ -265,7 +265,7 @@ export async function checkDependencies(): Promise<ScanResult[]> {
       }
     }
 
-    results.push(ok("deps_osv_critical", "DEPS", "No critical CVEs in dependencies (OSV.dev)",
+    results.push(ok("deps_osv_critical", "DEPS", "Critical CVEs in dependencies (OSV.dev)",
       criticalVulns.length === 0, "critical",
       criticalVulns.length === 0
         ? `Checked ${queries.length} packages — no critical vulns`
@@ -274,7 +274,7 @@ export async function checkDependencies(): Promise<ScanResult[]> {
       criticalVulns.length > 0 ? criticalVulns.join("; ") : undefined
     ));
 
-    results.push(ok("deps_osv_high", "DEPS", "No high-severity CVEs in dependencies (OSV.dev)",
+    results.push(ok("deps_osv_high", "DEPS", "High-severity CVEs in dependencies (OSV.dev)",
       highVulns.length === 0, "high",
       highVulns.length === 0
         ? `No high-severity vulns`

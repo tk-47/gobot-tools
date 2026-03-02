@@ -256,7 +256,7 @@ async function checkHeaderDisclosure(): Promise<ScanResult[]> {
 
   const server = res.headers.get("server");
   const serverOk = !server || server.toLowerCase() === "cloudflare";
-  results.push(ok("header_server", "EXTERNAL_HEADERS", "No origin server version disclosure",
+  results.push(ok("header_server", "EXTERNAL_HEADERS", "Origin server version disclosure",
     serverOk, "medium",
     !server ? "No Server header (good)"
       : server.toLowerCase() === "cloudflare" ? "Server: cloudflare (expected — CDN, not origin)"
@@ -266,7 +266,7 @@ async function checkHeaderDisclosure(): Promise<ScanResult[]> {
   ));
 
   const powered = res.headers.get("x-powered-by");
-  results.push(ok("header_powered_by", "EXTERNAL_HEADERS", "No X-Powered-By disclosure",
+  results.push(ok("header_powered_by", "EXTERNAL_HEADERS", "X-Powered-By disclosure",
     !powered, "medium",
     powered ? `X-Powered-By header present: "${powered}"` : "No X-Powered-By header (good)",
     ["SOC2:CC7.1", "PCI:2.2"],
@@ -288,7 +288,7 @@ async function checkHeaderDisclosure(): Promise<ScanResult[]> {
   ));
 
   const cors = res.headers.get("access-control-allow-origin");
-  results.push(ok("header_cors", "EXTERNAL_HEADERS", "No wildcard CORS header",
+  results.push(ok("header_cors", "EXTERNAL_HEADERS", "Wildcard CORS header",
     cors !== "*", "high",
     cors === "*" ? "CORS wildcard (*) — allows any origin" : cors ? `CORS: ${cors}` : "No CORS header (good)",
     ["SOC2:CC6.6", "PCI:6.4"],
