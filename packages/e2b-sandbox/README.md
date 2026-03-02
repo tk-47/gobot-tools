@@ -1,14 +1,56 @@
 # E2B Code Sandbox
 
-Give your Claudebot the ability to execute Python code in a secure, isolated cloud sandbox. Claude can write code, run it, and report back real results — for calculations, data analysis, text processing, and exploratory scripts.
+Without a sandbox, Claude writes code and hopes it works. With one, Claude writes code, runs it, reads the output, and gives you the real answer.
 
-Powered by **[E2B](https://e2b.dev)** — each execution runs in an ephemeral Firecracker microVM that spins up, runs your code, and is destroyed. No local Docker required.
+That's the difference this tool makes. Instead of "here's a script that should calculate that" you get the actual result. Instead of "try this regex" you get confirmation that it matches. Instead of a best-guess answer to a math problem, you get the number — verified by execution.
+
+This is one of the most direct upgrades you can give an AI assistant: close the loop between writing code and knowing whether it worked.
+
+---
+
+## Why This Matters
+
+Most AI tools can write code. Very few can run it. The gap between those two things is larger than it sounds.
+
+When Claude can only write code, it reasons about what *should* happen. It applies pattern-matching from training. It's usually right, but "usually right" is not the same as "ran it and confirmed." For anything where the exact answer matters — a financial calculation, a data transformation, a parsing problem — there's a meaningful difference between a confident guess and a verified result.
+
+When Claude can run code, the dynamic changes:
+
+- **It can verify its own work.** If the first attempt fails, Claude sees the error and tries again — in the same conversation, before it replies to you.
+- **You get actual output, not predicted output.** The answer to "what's the compound interest on $50,000 at 4.2% over 18 years?" is a number, not a formula.
+- **It handles the edge cases you didn't think to ask about.** An off-by-one error surfaces in the output. A type mismatch throws a real exception. You find out now, not later.
+- **Complex tasks become tractable.** Multi-step data processing, text transformations, schedule calculations — Claude can work through them iteratively with real feedback instead of writing a wall of code and hoping.
+
+The sandbox also means none of this touches your machine. Code runs in an isolated cloud VM that is destroyed the moment it finishes. Nothing can reach your filesystem, your environment variables, or your bot's processes.
+
+---
+
+## What You Can Do With It
+
+The E2B sandbox runs Python 3 with the standard library. Common uses:
+
+| Ask your bot... | What happens |
+|-----------------|--------------|
+| "If I invest $2,000/month at 7% for 25 years, what do I end up with?" | Claude writes and runs the calculation, returns the exact figure |
+| "Parse this CSV and tell me which category had the highest total" | Claude processes the data, returns the answer |
+| "Does this regex match my input?" | Claude runs it against your string, tells you what it captures |
+| "What day of the week is Easter 2031?" | Claude computes it, doesn't guess |
+| "Sort these names and remove duplicates" | Returns the actual cleaned list |
+| `/run <your own script>` | Runs whatever you send, returns stdout/stderr |
+
+---
+
+## Estimated Usage & Cost
+
+New accounts receive **$100 in free credits** from E2B — no payment method required to start. E2B charges by the second of sandbox runtime (see [e2b.dev/pricing](https://e2b.dev/pricing) for current rates). Most executions finish in 1–3 seconds.
+
+For a personal bot at 10–20 code requests per day, the $100 credit typically lasts **months to years**. After that, a 10-second execution costs a fraction of a cent.
 
 ---
 
 ## Requirements
 
-- An E2B account — sign up at [e2b.dev](https://e2b.dev) (free $100 credit on signup)
+- An E2B account — sign up at [e2b.dev](https://e2b.dev)
 - Your bot running (local Mac or VPS)
 - Node.js/Bun with `@e2b/code-interpreter` installed
 
@@ -62,24 +104,9 @@ print(math.factorial(20))
 
 When Claude determines that running code would give a better answer, it generates an `[ACTION:run_code]` tag. The bot shows a **"Run Code"** confirmation button — tap it to execute. Claude never runs code without your approval.
 
-The daily limit (`SANDBOX_AUTO_RUN_DAILY_LIMIT`) counts these Claude-proposed executions. `/run` commands are not counted against the limit.
+The daily limit (`SANDBOX_AUTO_RUN_DAILY_LIMIT`) counts Claude-proposed executions. `/run` commands are not counted against the limit.
 
----
-
-## What You Can Run
-
-The E2B default sandbox comes with Python 3 and the standard library pre-installed. Common use cases:
-
-| Task | Example |
-|------|---------|
-| Math & calculations | Compound interest, unit conversions, statistics |
-| Data processing | Parse CSV, sort/filter, compute averages |
-| Text manipulation | Regex, formatting, encoding/decoding |
-| Algorithmic problems | Sorting, searching, combinatorics |
-| Date/time logic | Schedule calculations, time zone conversions |
-| Quick scripts | Anything you'd run in a REPL |
-
-**Limits per execution:**
+**Execution limits:**
 - Timeout: 10 seconds
 - stdout: 3,000 characters (truncated)
 - stderr: 1,000 characters (truncated)
@@ -87,19 +114,7 @@ The E2B default sandbox comes with Python 3 and the standard library pre-install
 
 ---
 
-## Estimated Usage & Cost
-
-New accounts receive **$100 in free credits** from E2B. E2B charges by the second of sandbox runtime — see [e2b.dev/pricing](https://e2b.dev/pricing) for current rates.
-
-At typical usage (most scripts finish in 1–3 seconds), the free credit covers a very large number of executions before any charges apply. For a personal bot running 10–20 code requests per day, the $100 credit typically lasts **months to years**.
-
-After the free credit, costs remain low for personal use: a 10-second execution costs a fraction of a cent.
-
----
-
 ## How the Data Flows
-
-Understanding exactly where your code goes is important. Here's the full picture:
 
 ```
 You (Telegram message or /run command)
@@ -127,14 +142,6 @@ Bot stores as pending (5-minute expiry)
 E2B API  →  microVM  →  result  →  Telegram
 ```
 
-**What this means in practice:**
-
-- Your code is sent over HTTPS to E2B's API, executed in a fresh microVM, and the VM is destroyed
-- No filesystem state persists between runs — each execution starts clean
-- The executed code cannot make outbound network requests
-- Results are returned to your bot and sent back to you in Telegram
-- Claude receives the result as part of its response context — processed transiently, not stored by Anthropic beyond their standard retention policy
-
 **What never happens:**
 
 - Code results are never stored on E2B's servers after the sandbox is destroyed
@@ -148,9 +155,9 @@ E2B API  →  microVM  →  result  →  Telegram
 
 **API key security:** Your `E2B_API_KEY` lives in your bot's `.env` file, loaded at startup. It is never sent to users, never logged to chat, and never included in Claude's context.
 
-**Ephemeral execution:** Each sandbox is a fresh Firecracker microVM. It is destroyed immediately after the execution completes. No data persists between runs. E2B cannot access code output after the response is returned.
+**Ephemeral execution:** Each sandbox is a fresh Firecracker microVM. It is destroyed immediately after the execution completes. No data persists between runs.
 
-**Network isolation:** By default, sandboxes do not have outbound network access. Code you run cannot reach external services, exfiltrate data, or call APIs.
+**Network isolation:** Sandboxes do not have outbound network access by default. Code you run cannot reach external services, exfiltrate data, or call APIs.
 
 **No local execution:** Code runs on E2B's infrastructure, not on your Mac or VPS. A malformed or malicious script cannot affect your bot's filesystem or processes.
 
