@@ -16,8 +16,8 @@ Summarize what exists and what you will add or update.
 ## 2. Install library files
 
 Copy:
-- `packages/apple-notes-calendar/src/apple-native.ts` -> `src/lib/apple-native.ts`
-- `packages/apple-notes-calendar/src/apple-native-cli.ts` -> `src/tools/apple-native-cli.ts`
+- `packages/apple-notes/src/apple-native.ts` -> `src/lib/apple-native.ts`
+- `packages/apple-notes/src/apple-native-cli.ts` -> `src/tools/apple-native-cli.ts`
 
 The library should provide:
 - `isAppleNativeEnabled()`
@@ -65,6 +65,6 @@ If a test cannot run in the current environment, explain exactly why.
 
 ## Guardrails
 
-- Do not add Apple Calendar functionality.
+- Do not add unrelated scheduling functionality.
 - Do not add or request API keys/tokens for this tool.
 - Keep all instructions generic (no personal/private identifiers).

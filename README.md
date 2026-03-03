@@ -60,7 +60,7 @@ Connect your bot to a WeatherFlow Tempest personal weather station. Get live con
 - **Setup time:** ~5 minutes
 - **Requires:** `TEMPEST_TOKEN`, `TEMPEST_STATION_ID`
 
-### [Apple Notes (Local macOS)](packages/apple-notes-calendar) — `gobot-tools install apple-notes-calendar`
+### [Apple Notes (Local macOS)](packages/apple-notes) — `gobot-tools install apple-notes`
 
 Connect your bot to Apple Notes.app using local macOS Automation (JXA). Read/search/create/append notes directly on your Mac with no API keys, OAuth flow, or cloud API setup.
 

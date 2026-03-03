@@ -30,7 +30,7 @@ No API keys, OAuth flow, or cloud API setup required.
 Or from your bot repo:
 
 ```bash
-gobot-tools install apple-notes-calendar
+gobot-tools install apple-notes
 ```
 
 3. Open `prompt.md` and tell Claude Code:
@@ -63,5 +63,5 @@ bun run src/tools/apple-native-cli.ts notes append <NAME_OR_ID> <TEXT>
 ## Update
 
 ```bash
-gobot-tools update apple-notes-calendar
+gobot-tools update apple-notes
 ```

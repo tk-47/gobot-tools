@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "generatedAt": "2026-03-03T02:17:20.904Z",
+  "generatedAt": "2026-03-03T02:18:55.190Z",
   "tools": [
     {
       "name": "apple-health",
@@ -35,7 +35,7 @@
       "postInstall": "Open prompt.md in Claude Code and say: \"Set up Apple Watch health integration\""
     },
     {
-      "name": "apple-notes-calendar",
+      "name": "apple-notes",
       "displayName": "Apple Notes (Local macOS)",
       "description": "Read and write Apple Notes directly from your Mac using macOS Automation (JXA). No API keys, cloud sync setup, or OAuth tokens required.",
       "version": "1.1.0",
