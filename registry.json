@@ -3,33 +3,6 @@
   "generatedAt": "2026-03-03T02:29:00.296Z",
   "tools": [
     {
-      "name": "apple-calendar",
-      "displayName": "Apple Calendar (Local macOS)",
-      "description": "Read Apple Calendar events directly from Calendar.app on your Mac via local Automation (JXA). No API keys, OAuth tokens, or cloud API setup.",
-      "version": "1.0.0",
-      "author": "community",
-      "category": "integrations",
-      "tags": [
-        "apple",
-        "calendar",
-        "macos",
-        "jxa",
-        "osascript",
-        "local",
-        "productivity"
-      ],
-      "dependencies": [],
-      "files": [
-        "prompt.md",
-        "README.md",
-        ".env.example",
-        "src/apple-calendar.ts",
-        "src/apple-calendar-cli.ts"
-      ],
-      "envVars": [],
-      "postInstall": "Open prompt.md in Claude Code and say: \"Set up Apple Calendar integration\""
-    },
-    {
       "name": "apple-health",
       "displayName": "Apple Watch + Health Agent",
       "description": "Connect your iPhone and Apple Watch to your bot for sleep, HRV, readiness, activity, and vitals. Uses the free Health Auto Export app as a bridge. Works standalone or alongside Oura Ring. Includes a Health Agent for biometric insights, medication lookups, and symptom guidance.",

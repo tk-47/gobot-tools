@@ -70,6 +70,17 @@ Connect your bot to Apple Notes.app using local macOS Automation (JXA). Read/sea
 - **Setup time:** ~5 minutes
 - **Requires:** macOS + Automation permission for Notes
 
+### [Apple Calendar (Local macOS)](packages/apple-calendar) — `gobot-tools install apple-calendar`
+
+Connect your bot to Apple Calendar.app using local macOS Automation (JXA). Read events from a selected calendar (or all calendars) directly from your Mac with no API keys, OAuth flow, or cloud API setup.
+
+- List available Apple calendars
+- Read calendar events for today/tomorrow/this week/next week
+- Natural-language calendar intent interception in bot handlers
+- Local-only integration (no external network dependency)
+- **Setup time:** ~5 minutes
+- **Requires:** macOS + Automation permission for Calendar
+
 ### [Fireflies.ai Meeting Transcripts](packages/fireflies) — `gobot-tools install fireflies`
 
 Connect your bot to Fireflies.ai so meeting transcripts are automatically stored in memory. Summaries become searchable facts, action items become trackable goals, and you get a Telegram notification when it's done.
