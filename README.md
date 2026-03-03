@@ -70,16 +70,17 @@ Connect your bot to Apple Notes.app using local macOS Automation (JXA). Read/sea
 - **Setup time:** ~5 minutes
 - **Requires:** macOS + Automation permission for Notes
 
-### [Apple Calendar (Local macOS)](packages/apple-calendar) — `gobot-tools install apple-calendar`
+### [URL Calendar (ICS Feed)](packages/url-calendar) — `gobot-tools install url-calendar`
 
-Connect your bot to Apple Calendar.app using local macOS Automation (JXA). Read events from a selected calendar (or all calendars) directly from your Mac with no API keys, OAuth flow, or cloud API setup.
+Read events from any calendar — Apple, Google, Outlook, or any CalDAV source — by pointing the bot at a public or private ICS feed URL. **Read-only** — ICS is a one-way pull protocol; creating or editing events requires the ms365 or google-api tools.
 
-- List available Apple calendars
-- Read calendar events for today/tomorrow/this week/next week
-- Natural-language calendar intent interception in bot handlers
-- Local-only integration (no external network dependency)
-- **Setup time:** ~5 minutes
-- **Requires:** macOS + Automation permission for Calendar
+- Works with any ICS/webcal feed: Apple Calendar, Google Calendar, Outlook, and more
+- Multiple feed support — merge and sort events from several calendars at once
+- Full recurrence rule support (DAILY, WEEKLY with BYDAY, INTERVAL, COUNT, UNTIL)
+- Timezone-aware formatting, all-day event detection
+- No API keys, no OAuth, no macOS Automation — works on Mac and VPS
+- **Setup time:** ~2 minutes
+- **Requires:** `APPLE_CALENDAR_URL` (any ICS feed URL)
 
 ### [Fireflies.ai Meeting Transcripts](packages/fireflies) — `gobot-tools install fireflies`
 

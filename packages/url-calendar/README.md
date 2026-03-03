@@ -1,6 +1,6 @@
 # URL Calendar (ICS Feed)
 
-Read any calendar — Apple, Google, Outlook, or any CalDAV source — by pointing the bot at a public or private ICS feed URL.
+**Read-only.** Fetch and display events from any calendar — Apple, Google, Outlook, or any CalDAV source — by pointing the bot at a public or private ICS feed URL. Creating, editing, or deleting calendar events is not supported; ICS feeds are a one-way pull protocol with no write capability.
 
 No API keys. No OAuth. No macOS Automation. Works on Mac, VPS, or any Linux host.
 
