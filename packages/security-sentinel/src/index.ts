@@ -28,6 +28,10 @@ import {
   TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID,
   TIMEZONE, getInfraDescription,
 } from "./config";
+import {
+  loadIgnores, isIgnored, addIgnore, removeIgnore, listIgnores, formatExpiry,
+  type IgnoreRule,
+} from "./lib/ignores";
 
 // ============================================================
 // CONFIGURATION
@@ -35,7 +39,7 @@ import {
 
 const LOGS_DIR = join(PROJECT_ROOT, "logs", "security");
 
-export type Mode = "scan" | "hourly" | "daily" | "deep" | "compliance" | "install";
+export type Mode = "scan" | "hourly" | "daily" | "deep" | "compliance" | "install" | "ignore" | "unignore" | "ignores";
 
 // ============================================================
 // REPORT PERSISTENCE
@@ -113,8 +117,9 @@ function diffReports(current: ScanResult[], previous: ScanResult[] | null): Scan
 // ============================================================
 
 function formatReport(
-  report: ScanReport & { mode: string },
+  report: ScanReport & { mode: string; ignored?: ScanResult[] },
   diff: ScanDiff,
+  ignoreRules: IgnoreRule[],
   aiSummary?: string
 ): string {
   const lines: string[] = [];
@@ -127,8 +132,10 @@ function formatReport(
 
   const criticals = report.results.filter((r) => !r.pass && r.severity === "critical").length;
   const highs = report.results.filter((r) => !r.pass && r.severity === "high").length;
+  const ignoredCount = report.ignored?.length ?? 0;
 
-  lines.push(`SUMMARY: ${report.total} checks | ${report.passed} passed | ${report.failed} failed | ${criticals} critical | ${highs} high`);
+  const ignoredPart = ignoredCount > 0 ? ` | ${ignoredCount} ignored` : "";
+  lines.push(`SUMMARY: ${report.total} checks | ${report.passed} passed | ${report.failed} failed${ignoredPart} | ${criticals} critical | ${highs} high`);
   lines.push("");
 
   if (diff.new_failures.length > 0 || diff.resolved.length > 0) {
@@ -160,6 +167,22 @@ function formatReport(
     lines.push("");
   } else {
     lines.push("ALL CHECKS PASSED");
+    lines.push("");
+  }
+
+  if (report.ignored && report.ignored.length > 0) {
+    const sorted = [...report.ignored].sort((a, b) => {
+      const order = { critical: 0, high: 1, medium: 2, low: 3, info: 4 };
+      return order[a.severity] - order[b.severity];
+    });
+    lines.push(`IGNORED (${sorted.length}):`);
+    for (const f of sorted) {
+      const sev = f.severity.toUpperCase().padEnd(8);
+      const rule = ignoreRules.find((r) => r.id === f.id);
+      const note = rule ? `${rule.reason} — ${formatExpiry(rule.expires)}` : "no rule";
+      lines.push(`  [${sev}] ${f.id} — ${f.name}`);
+      lines.push(`           ${note}`);
+    }
     lines.push("");
   }
 
@@ -227,7 +250,7 @@ function formatTelegramAlert(report: ScanReport & { mode: string }, diff: ScanDi
  * Full report is saved to logs/security/ for detailed review.
  */
 function formatCompactTelegram(
-  report: ScanReport & { mode: string },
+  report: ScanReport & { mode: string; ignored?: ScanResult[] },
   diff: ScanDiff,
   reportFilename: string,
   aiSummary?: string
@@ -241,6 +264,7 @@ function formatCompactTelegram(
   const criticals = report.results.filter((r) => !r.pass && r.severity === "critical");
   const highs = report.results.filter((r) => !r.pass && r.severity === "high");
   const mediums = report.results.filter((r) => !r.pass && r.severity === "medium");
+  const ignoredCount = report.ignored?.length ?? 0;
 
   // Header
   const modeLabel = report.mode === "deep" ? "Deep Scan" : report.mode === "scan" ? "Quick Scan" : `${report.mode} scan`;
@@ -276,6 +300,9 @@ function formatCompactTelegram(
   }
   if (diff.resolved.length > 0) {
     lines.push(`✅ ${diff.resolved.length} resolved`);
+  }
+  if (ignoredCount > 0) {
+    lines.push(`⏭️ ${ignoredCount} ignored`);
   }
 
   // Compliance one-liner
@@ -547,23 +574,33 @@ export async function runSecurityScan(mode: Mode): Promise<ScanOutput> {
     allResults.push(...weeklyResults);
   }
 
-  const duration_ms = Date.now() - start;
-  const passed = allResults.filter((r) => r.pass).length;
-  const failed = allResults.filter((r) => !r.pass).length;
+  // Apply ignore rules — excluded from scores, compliance, and AI prompts
+  const ignores = await loadIgnores();
+  const ignoredResults = allResults.filter((r) => !r.pass && isIgnored(r.id, ignores));
+  const scoredResults = allResults.filter((r) => r.pass || !isIgnored(r.id, ignores));
 
-  const report: ScanReport & { ai_summary?: string; mode: string } = {
+  const duration_ms = Date.now() - start;
+  const passed = scoredResults.filter((r) => r.pass).length;
+  const failed = scoredResults.filter((r) => !r.pass).length;
+
+  const report: ScanReport & { ai_summary?: string; mode: string; ignored?: ScanResult[] } = {
     timestamp: new Date().toISOString(),
     duration_ms,
     total: allResults.length,
     passed,
     failed,
-    results: allResults,
-    compliance_summary: buildComplianceSummaryFromResults(allResults),
+    results: scoredResults,
+    ignored: ignoredResults,
+    compliance_summary: buildComplianceSummaryFromResults(scoredResults),
     mode,
   };
 
+  // Diff excludes ignored checks on both sides
   const previous = await getLastReport();
-  const diff = diffReports(allResults, previous?.results || null);
+  const prevScored = previous?.results
+    ? previous.results.filter((r) => !isIgnored(r.id, ignores))
+    : null;
+  const diff = diffReports(scoredResults, prevScored);
 
   if (mode === "hourly" || mode === "daily") {
     console.log(`Running AI review (${OLLAMA_MODEL})...`);
@@ -576,7 +613,7 @@ export async function runSecurityScan(mode: Mode): Promise<ScanOutput> {
   const filename = await saveReport(report);
   console.log(`Report saved: logs/security/${filename}`);
 
-  const full = formatReport(report, diff, report.ai_summary);
+  const full = formatReport(report, diff, ignores, report.ai_summary);
   const compact = formatCompactTelegram(report, diff, filename, report.ai_summary);
 
   if (mode !== "scan") {
@@ -591,7 +628,8 @@ export async function runSecurityScan(mode: Mode): Promise<ScanOutput> {
 }
 
 async function main() {
-  const mode = (process.argv[2] || "scan") as Mode;
+  const args = process.argv.slice(2);
+  const mode = (args[0] || "scan") as Mode;
 
   if (mode === "install") {
     checkInstall();
@@ -605,6 +643,75 @@ async function main() {
       return;
     }
     console.log(formatComplianceReport(last));
+    return;
+  }
+
+  // ── Ignore management ──────────────────────────────────────
+
+  if (mode === "ignores") {
+    const { active, expired } = await listIgnores();
+    if (active.length === 0 && expired.length === 0) {
+      console.log("No ignore rules defined.");
+      console.log("  Add one: bun run src/index.ts ignore <id> --reason \"...\" [--expires YYYY-MM-DD]");
+      return;
+    }
+    if (active.length > 0) {
+      console.log(`ACTIVE IGNORES (${active.length}):`);
+      for (const r of active) {
+        console.log(`  ${r.id.padEnd(30)} ${formatExpiry(r.expires).padEnd(25)} ${r.reason}`);
+        console.log(`  ${"".padEnd(30)} added: ${new Date(r.addedAt).toLocaleDateString()}`);
+      }
+    }
+    if (expired.length > 0) {
+      console.log(`\nEXPIRED (${expired.length}) — will be removed on next scan:`);
+      for (const r of expired) {
+        console.log(`  ${r.id.padEnd(30)} expired: ${new Date(r.expires!).toLocaleDateString()}`);
+      }
+    }
+    return;
+  }
+
+  if (mode === "ignore") {
+    const id = args[1];
+    if (!id) {
+      console.error("Usage: bun run src/index.ts ignore <id> [--reason \"...\"] [--expires YYYY-MM-DD]");
+      process.exit(1);
+    }
+    // Parse --reason and --expires flags
+    let reason = "No reason provided";
+    let expires: string | null = null;
+    for (let i = 2; i < args.length; i++) {
+      if (args[i] === "--reason" && args[i + 1]) {
+        reason = args[++i];
+      } else if (args[i] === "--expires" && args[i + 1]) {
+        const d = new Date(args[++i]);
+        if (isNaN(d.getTime())) {
+          console.error(`Invalid date: ${args[i]}. Use YYYY-MM-DD format.`);
+          process.exit(1);
+        }
+        expires = d.toISOString();
+      }
+    }
+    const rule = await addIgnore(id, reason, expires);
+    console.log(`Ignore rule added: ${rule.id}`);
+    console.log(`  Reason:  ${rule.reason}`);
+    console.log(`  Expires: ${formatExpiry(rule.expires)}`);
+    return;
+  }
+
+  if (mode === "unignore") {
+    const id = args[1];
+    if (!id) {
+      console.error("Usage: bun run src/index.ts unignore <id>");
+      process.exit(1);
+    }
+    const removed = await removeIgnore(id);
+    if (removed) {
+      console.log(`Ignore rule removed: ${id}`);
+      console.log(`  ${id} will now appear in failures on the next scan.`);
+    } else {
+      console.log(`No ignore rule found for: ${id}`);
+    }
     return;
   }
 
