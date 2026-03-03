@@ -868,10 +868,11 @@ async function checkAPICredentials(): Promise<ScanResult[]> {
       }),
       timeout: 15_000,
     });
-    const valid = res.status === 200 || res.status === 429;
+    // 200 = valid, 400 = bad request (key ok, body wrong), 429 = rate limited, 529 = overloaded — all mean key is valid
+    const valid = res.status === 200 || res.status === 400 || res.status === 429 || res.status === 529;
     results.push(ok("api_anthropic", "API_CREDS", "Anthropic API key is valid",
       valid, "critical",
-      valid ? `Key valid (status: ${res.status})` : `Key invalid (status: ${res.status})`,
+      valid ? `Key valid (status: ${res.status}${res.status === 529 ? ' — API overloaded' : res.status === 429 ? ' — rate limited' : ''})` : `Key invalid (status: ${res.status})`,
       ["SOC2:CC6.2", "PCI:8.6"],
       `Status: ${res.status}`
     ));
