@@ -441,6 +441,47 @@
       "postInstall": "Open prompt.md in Claude Code and say: \"Set up voice interface\""
     },
     {
+      "name": "homework-helper",
+      "displayName": "Homework Helper",
+      "description": "Grades 5–8 homework helper web app. Math answers are verified by E2B code execution — Claude never guesses. Science and history use vision. Runs on any machine; your child connects from any device over WiFi.",
+      "version": "1.0.0",
+      "author": "tk-47",
+      "category": "productivity",
+      "tags": [
+        "homework",
+        "education",
+        "math",
+        "science",
+        "history",
+        "e2b",
+        "kids",
+        "family",
+        "web",
+        "vision",
+        "katex"
+      ],
+      "dependencies": [],
+      "files": [
+        "prompt.md",
+        "README.md",
+        ".env.example",
+        "package.json",
+        "server.ts",
+        "src/types.ts",
+        "src/prompts.ts",
+        "src/solver.ts",
+        "public/index.html",
+        "public/app.js",
+        "public/styles.css"
+      ],
+      "envVars": [
+        "ANTHROPIC_API_KEY",
+        "E2B_API_KEY",
+        "PORT"
+      ],
+      "postInstall": "cd into homework-helper/, run 'bun install', symlink or copy your .env, then 'bun run start'. Open prompt.md in Claude Code for a guided walkthrough."
+    },
+    {
       "name": "vps-hardening",
       "displayName": "VPS Hardening",
       "description": "A 9-phase VPS security hardening prompt. SSH lockdown, Fail2Ban with progressive bans, UFW firewall, Cloudflare origin protection, Docker-aware rules, auto-updates, and more.",

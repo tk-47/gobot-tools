@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#4f46e5" />
+  <title>Homework Helper</title>
+
+  <!-- KaTeX -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" crossorigin="anonymous" />
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="container">
+
+    <!-- Header -->
+    <header class="header">
+      <h1>Homework Helper</h1>
+      <p>Math, Science &amp; History — Grades 5–8</p>
+    </header>
+
+    <!-- Input card -->
+    <div class="card" id="input-card">
+      <div class="card-title">Your Question</div>
+
+      <!-- Image inputs -->
+      <div class="image-inputs">
+        <label class="btn btn-secondary" for="problem-img-input">
+          📷 Snap Problem
+        </label>
+        <input type="file" id="problem-img-input" accept="image/*" capture="environment" />
+
+        <label class="btn btn-secondary" for="reference-img-input">
+          📎 Add Textbook Page
+        </label>
+        <input type="file" id="reference-img-input" accept="image/*" />
+      </div>
+
+      <!-- Image previews -->
+      <div id="previews" class="previews"></div>
+
+      <!-- Text question -->
+      <textarea
+        id="question"
+        placeholder="Or type your question here… e.g. What is 3/4 + 1/2?"
+        rows="3"
+        autocorrect="off"
+        autocapitalize="sentences"
+        spellcheck="true"
+      ></textarea>
+
+      <button class="btn btn-primary" id="submit-btn" type="button">
+        Get Help →
+      </button>
+    </div>
+
+    <!-- Loading card -->
+    <div class="card loading-card hidden" id="loading-card">
+      <div class="spinner" role="status" aria-label="Loading"></div>
+      <div class="loading-status" id="loading-status">Reading your homework...</div>
+    </div>
+
+    <!-- Answer card -->
+    <div class="card answer-card hidden" id="answer-card">
+      <span class="subject-badge badge-unknown" id="subject-badge">Math</span>
+
+      <div class="problem-text" id="problem-text"></div>
+
+      <!-- Answer box — math only -->
+      <div class="answer-box" id="answer-section">
+        <div class="answer-box-label">Answer</div>
+        <div class="answer-value" id="answer-value"></div>
+      </div>
+
+      <!-- Explanation -->
+      <div class="section-label">Explanation</div>
+      <div class="explanation-text" id="explanation-text"></div>
+
+      <!-- Steps — math only -->
+      <div id="steps-section">
+        <div class="section-label">How to Solve It</div>
+        <ol class="steps-list" id="steps-list"></ol>
+      </div>
+
+      <button class="btn btn-secondary reset-btn" id="reset-btn" type="button">
+        Ask Another Question
+      </button>
+    </div>
+
+    <!-- Error card -->
+    <div class="error-card hidden" id="error-card">
+      <strong>Something went wrong</strong>
+      <span id="error-message"></span>
+      <br /><br />
+      <button class="btn btn-secondary" id="error-reset-btn" type="button">Try Again</button>
+    </div>
+
+  </div><!-- .container -->
+
+  <script src="/app.js"></script>
+</body>
+</html>

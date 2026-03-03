@@ -222,6 +222,25 @@ A 9-phase hardening prompt for your Linux VPS. Paste it into Claude Code while S
 
 ---
 
+## Family
+
+### [Homework Helper](packages/homework-helper) — `gobot-tools install homework-helper`
+
+A standalone web app that turns your existing API keys into a grades 5–8 homework helper. Your child opens it on any device — iPad, tablet, laptop, phone — on the same WiFi as the computer running the server. No public URL needed.
+
+The design priority is correctness for math: Claude writes Python code, E2B runs it in an isolated cloud VM, and the verified output becomes the answer. Claude only explains how to get there — it never states or guesses the number itself. Science and history use a single vision call that can read photos of worksheets or textbook pages.
+
+- Math: Claude generates Python → E2B executes → verified answer → step-by-step explanation
+- Science/History: Vision call reads question and optional reference image, explains at grade level
+- Camera input on mobile — snap a photo of the worksheet directly from the browser
+- KaTeX math rendering for clean fraction and equation display
+- Mobile-first UI with 44px+ touch targets and dark mode
+- Completely standalone — shares only your API keys, no bot stack required
+- **Setup time:** ~5 minutes
+- **Requires:** `ANTHROPIC_API_KEY`, `E2B_API_KEY`
+
+---
+
 ## Infrastructure
 
 ### [Supabase to Convex Migration](packages/supabase-to-convex) — `gobot-tools install supabase-to-convex`
