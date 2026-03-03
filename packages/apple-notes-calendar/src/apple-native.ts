@@ -1,13 +1,13 @@
 /**
- * Apple Native — JXA wrappers for Apple Notes and Apple Calendar
+ * Apple Native — JXA wrappers for Apple Notes
  *
  * Uses osascript (JavaScript for Automation) to read/write Notes.app
- * and read Calendar.app events. Fully local — no API keys, no auth tokens,
+ * Fully local — no API keys, no auth tokens,
  * no network calls. macOS only.
  *
  * Requires one-time Automation permission:
  *   System Settings → Privacy & Security → Automation
- *   → grant Terminal (or the launchd service) access to Notes and Calendar
+ *   → grant Terminal (or the launchd service) access to Notes
  */
 
 import { execFile } from "child_process";
@@ -31,15 +31,6 @@ export interface NoteDetail extends NoteItem {
   body: string; // full plaintext content
 }
 
-export interface CalEvent {
-  title: string;
-  start: string;     // ISO string
-  end: string;       // ISO string
-  calendar: string;  // calendar name
-  location: string;
-  notes: string;
-  isAllDay: boolean;
-}
 
 // ---------------------------------------------------------------------------
 // Internal: JXA runner
@@ -124,15 +115,22 @@ export async function listNotes(folder?: string, limit = 20): Promise<NoteItem[]
     for (let i = 0; i < Math.min(notes.length, limit); i++) {
       const n = notes[i];
       let snippet = '';
+      let folderName = '';
+      let modifiedAt = new Date(0).toISOString();
       try {
         const pt = n.plaintext();
         snippet = pt ? pt.substring(0, 100).replace(/\\n/g, ' ') : '';
       } catch(e) {}
+      try { folderName = n.container && n.container.name ? (n.container.name() || '') : ''; } catch(e) {}
+      try {
+        const md = n.modificationDate && n.modificationDate();
+        modifiedAt = md && md.toISOString ? md.toISOString() : modifiedAt;
+      } catch(e) {}
       result.push({
         id: n.id(),
         name: n.name(),
-        folder: n.container ? n.container.name() : '',
-        modifiedAt: n.modificationDate().toISOString(),
+        folder: folderName,
+        modifiedAt: modifiedAt,
         snippet: snippet
       });
     }
@@ -145,7 +143,7 @@ export async function listNotes(folder?: string, limit = 20): Promise<NoteItem[]
     return data as NoteItem[];
   } catch (err) {
     console.error("listNotes error:", err);
-    return [];
+    throw err;
   }
 }
 
@@ -179,15 +177,22 @@ export async function readNote(nameOrId: string): Promise<NoteDetail | null> {
     } else {
       let body = '';
       let snippet = '';
+      let folderName = '';
+      let modifiedAt = new Date(0).toISOString();
       try {
         body = note.plaintext() || '';
         snippet = body.substring(0, 100).replace(/\\n/g, ' ');
       } catch(e) {}
+      try { folderName = note.container && note.container.name ? (note.container.name() || '') : ''; } catch(e) {}
+      try {
+        const md = note.modificationDate && note.modificationDate();
+        modifiedAt = md && md.toISOString ? md.toISOString() : modifiedAt;
+      } catch(e) {}
       JSON.stringify({
         id: note.id(),
         name: note.name(),
-        folder: note.container ? note.container.name() : '',
-        modifiedAt: note.modificationDate().toISOString(),
+        folder: folderName,
+        modifiedAt: modifiedAt,
         snippet: snippet,
         body: body
       });
@@ -200,7 +205,7 @@ export async function readNote(nameOrId: string): Promise<NoteDetail | null> {
     return data as NoteDetail;
   } catch (err) {
     console.error("readNote error:", err);
-    return null;
+    throw err;
   }
 }
 
@@ -219,14 +224,21 @@ export async function searchNotes(query: string, limit = 10): Promise<NoteItem[]
       if (result.length >= ${limit}) break;
       const name = n.name().toLowerCase();
       let pt = '';
+      let folderName = '';
+      let modifiedAt = new Date(0).toISOString();
       try { pt = n.plaintext() || ''; } catch(e) {}
       if (name.includes(q) || pt.toLowerCase().includes(q)) {
         let snippet = pt.substring(0, 100).replace(/\\n/g, ' ');
+        try { folderName = n.container && n.container.name ? (n.container.name() || '') : ''; } catch(e) {}
+        try {
+          const md = n.modificationDate && n.modificationDate();
+          modifiedAt = md && md.toISOString ? md.toISOString() : modifiedAt;
+        } catch(e) {}
         result.push({
           id: n.id(),
           name: n.name(),
-          folder: n.container ? n.container.name() : '',
-          modifiedAt: n.modificationDate().toISOString(),
+          folder: folderName,
+          modifiedAt: modifiedAt,
           snippet: snippet
         });
       }
@@ -240,7 +252,7 @@ export async function searchNotes(query: string, limit = 10): Promise<NoteItem[]
     return data as NoteItem[];
   } catch (err) {
     console.error("searchNotes error:", err);
-    return [];
+    throw err;
   }
 }
 
@@ -321,141 +333,6 @@ export async function appendToNote(nameOrId: string, text: string): Promise<bool
     console.error("appendToNote error:", err);
     return false;
   }
-}
-
-// ---------------------------------------------------------------------------
-// Calendar — Read Operations
-// ---------------------------------------------------------------------------
-
-/**
- * Fetch events from Apple Calendar in a date range.
- * Filters to the "Jordan Family" calendar by default.
- * Returns empty array on VPS / non-macOS.
- */
-export async function getAppleCalendarEvents(
-  start: Date,
-  end: Date,
-  calendarName = "Jordan Family"
-): Promise<CalEvent[]> {
-  if (!isAppleNativeEnabled()) return [];
-
-  const escapedCal = escapeJxa(calendarName);
-  const startISO = start.toISOString();
-  const endISO = end.toISOString();
-
-  const script = `
-    const app = Application('Calendar');
-    app.includeStandardAdditions = true;
-    const calName = '${escapedCal}';
-    const startDate = new Date('${startISO}');
-    const endDate = new Date('${endISO}');
-
-    // Find the target calendar(s) — support multiple matching names
-    const allCals = app.calendars();
-    const targetCals = allCals.filter(c => {
-      try { return c.name() === calName; } catch(e) { return false; }
-    });
-
-    // If named calendar not found, use all calendars
-    const cals = targetCals.length > 0 ? targetCals : allCals;
-
-    const result = [];
-    for (const cal of cals) {
-      const calTitle = (function() { try { return cal.name(); } catch(e) { return ''; } })();
-      let events = [];
-      try { events = cal.events(); } catch(e) { continue; }
-      for (const evt of events) {
-        try {
-          const evtStart = evt.startDate();
-          const evtEnd = evt.endDate();
-          if (!evtStart || !evtEnd) continue;
-          if (evtEnd < startDate || evtStart > endDate) continue;
-          let loc = '';
-          let notes = '';
-          let allDay = false;
-          try { loc = evt.location() || ''; } catch(e) {}
-          try { notes = evt.description() || ''; } catch(e) {}
-          try { allDay = evt.alldayEvent(); } catch(e) {}
-          result.push({
-            title: evt.summary(),
-            start: evtStart.toISOString(),
-            end: evtEnd.toISOString(),
-            calendar: calTitle,
-            location: loc,
-            notes: notes.substring(0, 200),
-            isAllDay: allDay
-          });
-        } catch(e) {}
-      }
-    }
-    // Sort by start
-    result.sort((a, b) => new Date(a.start) - new Date(b.start));
-    JSON.stringify(result);
-  `;
-
-  try {
-    const data = await runJxa(script);
-    if (!Array.isArray(data)) return [];
-    return data as CalEvent[];
-  } catch (err) {
-    console.error("getAppleCalendarEvents error:", err);
-    return [];
-  }
-}
-
-/**
- * Format Apple Calendar events into a human-readable string.
- * Returns empty string if no events.
- */
-export function formatAppleCalendarEvents(events: CalEvent[], label: string): string {
-  if (events.length === 0) return `No Apple Calendar events ${label}.`;
-
-  const tz = process.env.USER_TIMEZONE || "America/Chicago";
-  const isMultiDay = events.some((e) => {
-    const d = new Date(e.start).toDateString();
-    return d !== new Date(events[0].start).toDateString();
-  });
-
-  let currentDate = "";
-  const lines: string[] = [];
-
-  for (const evt of events) {
-    const evtDate = new Date(evt.start).toLocaleDateString("en-US", {
-      timeZone: tz,
-      weekday: "short",
-      month: "short",
-      day: "numeric",
-    });
-
-    if (isMultiDay && evtDate !== currentDate) {
-      currentDate = evtDate;
-      lines.push(`\n${evtDate}:`);
-    }
-
-    const calTag = evt.calendar ? ` [${evt.calendar}]` : "";
-    if (evt.isAllDay) {
-      lines.push(`- [All Day] ${evt.title}${calTag}`);
-    } else {
-      const startTime = new Date(evt.start).toLocaleTimeString("en-US", {
-        timeZone: tz,
-        hour: "numeric",
-        minute: "2-digit",
-        hour12: true,
-      });
-      const endTime = new Date(evt.end).toLocaleTimeString("en-US", {
-        timeZone: tz,
-        hour: "numeric",
-        minute: "2-digit",
-        hour12: true,
-      });
-      let line = `- ${startTime}-${endTime}: ${evt.title}`;
-      if (evt.location) line += ` (${evt.location})`;
-      line += calTag;
-      lines.push(line);
-    }
-  }
-
-  return lines.join("\n").trim();
 }
 
 // ---------------------------------------------------------------------------

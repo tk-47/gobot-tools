@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "generatedAt": "2026-02-28T00:00:00.000Z",
+  "generatedAt": "2026-03-03T02:17:20.904Z",
   "tools": [
     {
       "name": "apple-health",
@@ -36,15 +36,14 @@
     },
     {
       "name": "apple-notes-calendar",
-      "displayName": "Apple Notes + Calendar",
-      "description": "Read and write Apple Notes, and read Apple Calendar events directly from your Mac — no API keys, no cloud sync, no auth tokens. Uses macOS Automation (JXA) to give your bot access to local Notes.app and Calendar.app.",
-      "version": "1.0.0",
-      "author": "tk-47",
+      "displayName": "Apple Notes (Local macOS)",
+      "description": "Read and write Apple Notes directly from your Mac using macOS Automation (JXA). No API keys, cloud sync setup, or OAuth tokens required.",
+      "version": "1.1.0",
+      "author": "community",
       "category": "integrations",
       "tags": [
         "apple",
         "notes",
-        "calendar",
         "macos",
         "jxa",
         "osascript",
@@ -60,39 +59,7 @@
         "src/apple-native-cli.ts"
       ],
       "envVars": [],
-      "postInstall": "Open prompt.md in Claude Code and say: \"Set up Apple Notes and Calendar integration\""
-    },
-    {
-      "name": "garmin",
-      "displayName": "Garmin Connect",
-      "description": "Connect to Garmin Connect for exercise data, running workouts, training load, Body Battery, and VO2 max. Designed to complement Oura Ring (sleep) and Apple Health (steps). Uses the garminconnect Python library with OAuth token caching \u2014 no official API key required.",
-      "version": "1.0.0",
-      "author": "tk-47",
-      "category": "health",
-      "tags": [
-        "garmin",
-        "running",
-        "exercise",
-        "fitness",
-        "training",
-        "body-battery",
-        "vo2max",
-        "wearable",
-        "cycling",
-        "workout"
-      ],
-      "dependencies": [],
-      "files": [
-        "prompt.md",
-        "README.md",
-        ".env.example",
-        "src/garmin.py"
-      ],
-      "envVars": [
-        "GARMIN_EMAIL",
-        "GARMIN_PASSWORD"
-      ],
-      "postInstall": "Open prompt.md in Claude Code and say: \"Set up Garmin Connect integration\""
+      "postInstall": "Open prompt.md in Claude Code and say: \"Set up Apple Notes integration\""
     },
     {
       "name": "fireflies",
@@ -144,6 +111,38 @@
         "FLIGHTAWARE_API_KEY"
       ],
       "postInstall": "Open prompt.md in Claude Code and say: \"Set up FlightAware flight tracking\""
+    },
+    {
+      "name": "garmin",
+      "displayName": "Garmin Connect",
+      "description": "Connect to Garmin Connect for exercise data, running workouts, training load, Body Battery, and VO2 max. Designed to complement Oura Ring (sleep) and Apple Health (steps). Uses the garminconnect Python library with OAuth token caching — no official API key required.",
+      "version": "1.0.0",
+      "author": "tk-47",
+      "category": "health",
+      "tags": [
+        "garmin",
+        "running",
+        "exercise",
+        "fitness",
+        "training",
+        "body-battery",
+        "vo2max",
+        "wearable",
+        "cycling",
+        "workout"
+      ],
+      "dependencies": [],
+      "files": [
+        "prompt.md",
+        "README.md",
+        ".env.example",
+        "src/garmin.py"
+      ],
+      "envVars": [
+        "GARMIN_EMAIL",
+        "GARMIN_PASSWORD"
+      ],
+      "postInstall": "Open prompt.md in Claude Code and say: \"Set up Garmin Connect integration\""
     },
     {
       "name": "google-api",
@@ -250,8 +249,8 @@
     {
       "name": "security-sentinel",
       "displayName": "Security Sentinel",
-      "description": "Autonomous security scanning agent for VPS and web infrastructure. 80+ checks across auth, TLS, headers, VPS hardening, API credentials, and dependencies. SOC2, HIPAA, and PCI-DSS compliance reporting. Optional AI analysis via Ollama or Claude API.",
-      "version": "1.0.4",
+      "description": "Autonomous security scanning agent for VPS and web infrastructure. 90+ checks across 12 tools covering auth, TLS, headers, VPS hardening, API credentials, dependencies, SAST, secrets, email security, HTTP recon, and host hardening. SOC2, HIPAA, and PCI-DSS compliance reporting. Optional AI analysis via Ollama or Claude API.",
+      "version": "2.0.0",
       "author": "tk-47",
       "category": "security",
       "tags": [
@@ -264,6 +263,12 @@
         "pci-dss",
         "nmap",
         "nuclei",
+        "semgrep",
+        "gitleaks",
+        "grype",
+        "sslyze",
+        "lynis",
+        "httpx",
         "ollama"
       ],
       "dependencies": [],
@@ -287,6 +292,7 @@
         "VPS_SSH_KEY",
         "DOMAIN",
         "WEBHOOK_ENDPOINTS",
+        "HTTPX_TARGETS",
         "TELEGRAM_BOT_TOKEN",
         "TELEGRAM_USER_ID",
         "ANTHROPIC_API_KEY"
@@ -402,37 +408,6 @@
         "VOICE_WEB_TOKEN"
       ],
       "postInstall": "Open prompt.md in Claude Code and say: \"Set up voice interface\""
-    },
-    {
-      "name": "e2b-sandbox",
-      "displayName": "E2B Code Sandbox",
-      "description": "Execute Python code in isolated Firecracker microVMs via E2B. Adds a /run command for direct execution and a Claude-initiated confirmation flow for AI-proposed code. Ephemeral, network-isolated sandboxes — no local Docker required.",
-      "version": "1.1.0",
-      "author": "tk-47",
-      "category": "integrations",
-      "tags": [
-        "code-execution",
-        "python",
-        "sandbox",
-        "e2b",
-        "firecracker",
-        "repl",
-        "data-analysis",
-        "scripting"
-      ],
-      "dependencies": [],
-      "files": [
-        "prompt.md",
-        "README.md",
-        ".env.example",
-        "src/sandbox.ts"
-      ],
-      "envVars": [
-        "E2B_API_KEY",
-        "SANDBOX_ENABLED",
-        "SANDBOX_AUTO_RUN_DAILY_LIMIT"
-      ],
-      "postInstall": "Open prompt.md in Claude Code and say: \"Set up E2B code sandbox\""
     },
     {
       "name": "vps-hardening",

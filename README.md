@@ -60,6 +60,16 @@ Connect your bot to a WeatherFlow Tempest personal weather station. Get live con
 - **Setup time:** ~5 minutes
 - **Requires:** `TEMPEST_TOKEN`, `TEMPEST_STATION_ID`
 
+### [Apple Notes (Local macOS)](packages/apple-notes-calendar) — `gobot-tools install apple-notes-calendar`
+
+Connect your bot to Apple Notes.app using local macOS Automation (JXA). Read/search/create/append notes directly on your Mac with no API keys, OAuth flow, or cloud API setup.
+
+- Notes list/read/search/create/append
+- Natural-language Notes intent interception in bot handlers
+- Local-only integration (no external network dependency)
+- **Setup time:** ~5 minutes
+- **Requires:** macOS + Automation permission for Notes
+
 ### [Fireflies.ai Meeting Transcripts](packages/fireflies) — `gobot-tools install fireflies`
 
 Connect your bot to Fireflies.ai so meeting transcripts are automatically stored in memory. Summaries become searchable facts, action items become trackable goals, and you get a Telegram notification when it's done.

@@ -1,14 +1,13 @@
 {
   "name": "apple-notes-calendar",
-  "displayName": "Apple Notes + Calendar",
-  "description": "Read and write Apple Notes, and read Apple Calendar events directly from your Mac — no API keys, no cloud sync, no auth tokens. Uses macOS Automation (JXA) to give your bot access to local Notes.app and Calendar.app.",
-  "version": "1.0.0",
-  "author": "tk-47",
+  "displayName": "Apple Notes (Local macOS)",
+  "description": "Read and write Apple Notes directly from your Mac using macOS Automation (JXA). No API keys, cloud sync setup, or OAuth tokens required.",
+  "version": "1.1.0",
+  "author": "community",
   "category": "integrations",
   "tags": [
     "apple",
     "notes",
-    "calendar",
     "macos",
     "jxa",
     "osascript",
@@ -24,5 +23,5 @@
     "src/apple-native-cli.ts"
   ],
   "envVars": [],
-  "postInstall": "Open prompt.md in Claude Code and say: \"Set up Apple Notes and Calendar integration\""
+  "postInstall": "Open prompt.md in Claude Code and say: \"Set up Apple Notes integration\""
 }

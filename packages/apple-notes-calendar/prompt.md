@@ -1,176 +1,70 @@
-# Apple Notes + Calendar Setup
+# Apple Notes Setup
 
-You are helping the user integrate Apple Notes and Apple Calendar into their Claudebot.
-Everything runs locally on macOS via JXA (JavaScript for Automation / osascript).
-No API keys, no cloud sync, no auth tokens required.
+You are helping the user add Apple Notes support to their bot.
+This integration runs locally on macOS via JXA (`osascript`) and does not require API keys.
 Follow these steps in order.
 
----
+## 1. Inspect current project state
 
-## Step 1 — Check existing setup
+Check whether these files already exist:
+- `src/lib/apple-native.ts`
+- `src/tools/apple-native-cli.ts`
+- `src/bot.ts` imports/handlers for Apple Notes
 
-Read the current state of the project:
-- Check if `src/lib/apple-native.ts` exists (already installed?)
-- Check if `src/tools/apple-native-cli.ts` exists
-- Check if `bot.ts` already imports from `apple-native`
-- Check if the bot is running on macOS (VPS users cannot use this integration)
+Summarize what exists and what you will add or update.
 
-Tell the user what you found and what you'll be adding.
+## 2. Install library files
 
----
+Copy:
+- `packages/apple-notes-calendar/src/apple-native.ts` -> `src/lib/apple-native.ts`
+- `packages/apple-notes-calendar/src/apple-native-cli.ts` -> `src/tools/apple-native-cli.ts`
 
-## Step 2 — Install the library
+The library should provide:
+- `isAppleNativeEnabled()`
+- `listNotes(folder?, limit?)`
+- `readNote(nameOrId)`
+- `searchNotes(query, limit?)`
+- `createNote(title, body, folder?)`
+- `appendToNote(nameOrId, text)`
+- `formatNoteList(notes)`
 
-Copy `src/apple-native.ts` from this package into the bot's `src/lib/apple-native.ts`.
+## 3. Wire bot handlers
 
-This file provides:
-- `isAppleNativeEnabled()` — returns true on macOS only; gates all JXA calls
-- `listNotes(folder?, limit?)` — list notes with optional folder filter
-- `readNote(nameOrId)` — read a note's full content by name or id
-- `searchNotes(query, limit?)` — search notes by keyword
-- `createNote(title, body, folder?)` — create a new note
-- `appendToNote(nameOrId, text)` — append text to an existing note
-- `getAppleCalendarEvents(start, end, calendarName?)` — fetch calendar events in a date range
-- `formatAppleCalendarEvents(events, label)` — human-readable event list
-- `formatNoteList(notes)` — human-readable note list
+In `src/bot.ts`:
+- Import Apple Notes helpers from `./lib/apple-native`
+- Add intercepts for natural language notes requests before generic Claude processing
+- Support at minimum:
+  - list notes
+  - read/open note by name
+  - search notes
+  - create note
+  - append to note
 
----
+Keep behavior macOS-gated via `isAppleNativeEnabled()`.
 
-## Step 3 — Install the CLI tool
+## 4. Add (or verify) CLI usage docs
 
-Copy `src/apple-native-cli.ts` from this package into the bot's `src/tools/apple-native-cli.ts`.
-
-This CLI is used by Claude (subprocess mode) to fetch data on demand. It supports:
-
-```
-bun run src/tools/apple-native-cli.ts notes list [FOLDER] [LIMIT]
-bun run src/tools/apple-native-cli.ts notes read <NAME_OR_ID>
-bun run src/tools/apple-native-cli.ts notes search <QUERY>
-bun run src/tools/apple-native-cli.ts notes create <TITLE> <BODY> [FOLDER]
-bun run src/tools/apple-native-cli.ts notes append <NAME_OR_ID> <TEXT>
-bun run src/tools/apple-native-cli.ts calendar events [DAYS]
-bun run src/tools/apple-native-cli.ts calendar search <QUERY>
-```
-
----
-
-## Step 4 — Wire imports into bot.ts
-
-In `src/bot.ts`, add these imports near the top (alongside other lib imports):
-
-```typescript
-import {
-  isAppleNativeEnabled,
-  getAppleCalendarEvents,
-  formatAppleCalendarEvents,
-} from "./lib/apple-native";
-```
-
-If the user also wants Notes.app commands (slash commands or keyword triggers), add:
-
-```typescript
-import {
-  listNotes,
-  readNote,
-  searchNotes,
-  createNote,
-  appendToNote,
-  formatNoteList,
-} from "./lib/apple-native";
-```
-
----
-
-## Step 5 — Add calendar context injection to callClaude()
-
-Find the `callClaude()` function in `bot.ts`. Inside it, locate the block that builds `sections[]`
-for the system prompt (near other context blocks like MS365, weather, health).
-
-Add this block after the MS365 calendar block:
-
-```typescript
-// Apple Calendar context — inject personal/family calendar events (macOS only)
-if (isAppleNativeEnabled()) {
-  const calendarKeywords = /\b(calendar|schedule|meeting|event|appointment|busy|free|agenda)\b/i;
-  if (calendarKeywords.test(userMessage)) {
-    const { start, end, label } = parseDateRange(userMessage);
-    await getAppleCalendarEvents(start, end).then((events) => {
-      if (events.length > 0) {
-        sections.push(`## APPLE CALENDAR — ${label.toUpperCase()} (personal/family — use this data)\n${formatAppleCalendarEvents(events, label)}`);
-      }
-    }).catch((err) => console.error("Apple Calendar fetch failed:", err));
-  }
-}
-```
-
-This ensures the bot automatically answers calendar questions from local data without needing an external API call.
-
----
-
-## Step 6 — (Optional) Add Apple Notes slash commands
-
-If the user wants to query Notes directly from the bot, add Grammy handlers for commands like `/notes`, `/note`, `/searchnotes`:
-
-```typescript
-bot.command("notes", async (ctx) => {
-  if (!isAppleNativeEnabled()) {
-    return ctx.reply("Apple Notes requires macOS.");
-  }
-  const query = ctx.match?.trim();
-  if (query) {
-    const notes = await searchNotes(query, 10);
-    return ctx.reply(formatNoteList(notes) || `No notes matching "${query}".`);
-  }
-  const notes = await listNotes(undefined, 15);
-  return ctx.reply(formatNoteList(notes) || "No notes found.");
-});
-```
-
-Add this handler near the other command handlers in `bot.ts`.
-
----
-
-## Step 7 — Grant macOS Automation permission
-
-Tell the user:
-
-> The bot uses `osascript` to communicate with Notes and Calendar. You need to grant permission once:
->
-> 1. Open **System Settings → Privacy & Security → Automation**
-> 2. Find the app running your bot (Terminal, iTerm2, or your launchd service)
-> 3. Enable **Notes** and **Calendar** for that app
->
-> macOS will also prompt you automatically on the first JXA call — just click Allow.
-
----
-
-## Step 8 — Verify
-
-Run these to confirm the integration works:
+Ensure the project can run these commands:
 
 ```bash
-bun run src/tools/apple-native-cli.ts calendar events 7
 bun run src/tools/apple-native-cli.ts notes list
+bun run src/tools/apple-native-cli.ts notes read "<name>"
+bun run src/tools/apple-native-cli.ts notes search "<query>"
 ```
 
-If events and notes appear, you're done.
+## 5. Permissions reminder
 
----
+Tell the user to enable Automation once:
+- `System Settings -> Privacy & Security -> Automation`
+- Enable **Notes** for the app running the bot process
 
-## Troubleshooting
+## 6. Verify
 
-**"Not authorized to send Apple events"**
-- System Settings → Privacy & Security → Automation → enable Notes + Calendar
+Run a quick local smoke test with `notes list` and one read/search command.
+If a test cannot run in the current environment, explain exactly why.
 
-**Calendar name doesn't match**
-- The default calendar name is "Jordan Family" — to use a different calendar,
-  pass the name as the third argument: `getAppleCalendarEvents(start, end, "My Calendar")`
-- Or update the default in `apple-native.ts` line 338
+## Guardrails
 
-**Notes search is slow with large libraries**
-- JXA scans every note sequentially; with 1000+ notes expect 3-5 seconds
-- Filter by folder to narrow the search
-
-**"Apple Native integration requires macOS"**
-- This integration is gated on `isAppleNativeEnabled()` which returns false on Linux (VPS)
-- The VPS fallback (anthropic-processor) simply won't include calendar context — no error
+- Do not add Apple Calendar functionality.
+- Do not add or request API keys/tokens for this tool.
+- Keep all instructions generic (no personal/private identifiers).
