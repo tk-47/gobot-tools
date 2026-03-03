@@ -2,7 +2,7 @@
   "name": "apple-notes",
   "displayName": "Apple Notes (Local macOS)",
   "description": "Read and write Apple Notes directly from your Mac using macOS Automation (JXA). No API keys, cloud sync setup, or OAuth tokens required.",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "author": "community",
   "category": "integrations",
   "tags": [

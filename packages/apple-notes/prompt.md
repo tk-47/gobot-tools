@@ -42,6 +42,27 @@ In `src/bot.ts`:
 
 Keep behavior macOS-gated via `isAppleNativeEnabled()`.
 
+**Important**: Use the following regex for the create-note match to handle natural language phrasing like "create a note" or "create a new note":
+
+```ts
+const createMatch = text.match(
+  /(?:add (?:a |an )?(?:to )?note|(?:new|create|save) (?:a |an |a new )?note|note down)[\s:]+(.+)/i
+);
+if (createMatch) {
+  // Strip "called/titled/named" prefix from captured content
+  const content = createMatch[1].trim().replace(/^(?:called|titled|named)\s+/i, '');
+  // Split "Title: body" or "Title — body" into separate fields
+  const splitMatch = content.match(/^(.+?)\s*(?:—|-|:)\s+(.+)$/);
+  const title = splitMatch ? splitMatch[1].trim() : content.substring(0, 60);
+  const body  = splitMatch ? splitMatch[2].trim() : content;
+  const result = await createNote(title, body);
+  await ctx.reply(`Note saved: "${result.name}"`);
+  return;
+}
+```
+
+Without `(?:a |an |a new )?`, phrases like "create a note called X" fall through to the list fallback.
+
 ## 4. Add (or verify) CLI usage docs
 
 Ensure the project can run these commands:
