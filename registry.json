@@ -62,6 +62,36 @@
       "postInstall": "Open prompt.md in Claude Code and say: \"Set up Apple Notes integration\""
     },
     {
+      "name": "url-calendar",
+      "displayName": "URL Calendar (ICS Feed)",
+      "description": "Read any calendar — Apple, Google, Outlook, or any CalDAV source — by pointing the bot at a public or private ICS feed URL. No API keys, no OAuth, no macOS Automation. Works on Mac, VPS, or any Linux host.",
+      "version": "1.0.0",
+      "author": "tk-47",
+      "category": "integrations",
+      "tags": [
+        "calendar",
+        "ics",
+        "webcal",
+        "apple-calendar",
+        "google-calendar",
+        "caldav",
+        "scheduling",
+        "productivity"
+      ],
+      "dependencies": [],
+      "files": [
+        "prompt.md",
+        "README.md",
+        ".env.example",
+        "src/url-calendar.ts",
+        "src/url-calendar-cli.ts"
+      ],
+      "envVars": [
+        "APPLE_CALENDAR_URL"
+      ],
+      "postInstall": "Open prompt.md in Claude Code and say: \"Set up URL calendar integration\""
+    },
+    {
       "name": "fireflies",
       "displayName": "Fireflies.ai Meeting Transcripts",
       "description": "Auto-capture meeting summaries and action items from Fireflies.ai. Stores summaries as memory facts and action items as trackable goals with Telegram notifications.",

@@ -1,0 +1,7 @@
+{
+  "name": "url-calendar",
+  "version": "1.0.0",
+  "description": "ICS/webcal calendar feed integration for Claudebot — reads any public or private calendar URL, no API keys or macOS Automation required",
+  "author": "tk-47",
+  "license": "MIT"
+}
