@@ -2,7 +2,7 @@
   "name": "homework-helper",
   "displayName": "Homework Helper",
   "description": "Grades 5–8 homework helper for math, science, history, and English/grammar. Math answers are verified by E2B code execution — never guessed. Works from any device on the same WiFi.",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "author": "tk-47",
   "category": "productivity",
   "tags": [

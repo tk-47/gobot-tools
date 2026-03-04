@@ -11,7 +11,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { Sandbox } from "@e2b/code-interpreter";
 import type { AskRequest, AskResponse, Subject } from "./types";
-import { MATH_CODE_PROMPT, MATH_EXPLAIN_PROMPT, SCIENCE_HISTORY_PROMPT, ENGLISH_PROMPT } from "./prompts";
+import { MATH_CODE_PROMPT, MATH_EXPLAIN_PROMPT, KNOWLEDGE_PROMPT, ENGLISH_PROMPT } from "./prompts";
 
 const MATH_KEYWORDS = /\b(solve|equation|calculate|fraction|decimal|percent|algebra|geometry|area|perimeter|volume|angle|triangle|circle|square|rectangle|factor|simplify|evaluate|multiply|divide|add|subtract|sum|product|quotient|remainder|exponent|power|root|sqrt|inequality|graph|slope|ratio|proportion|probability|mean|median|mode|range|integer|prime|composite)\b/i;
 
@@ -172,7 +172,10 @@ async function solveKnowledge(req: AskRequest, subject: Subject): Promise<AskRes
     text: "Answer the question above and return JSON as described in the system prompt.",
   });
 
-  const systemPrompt = subject === "english" ? ENGLISH_PROMPT : SCIENCE_HISTORY_PROMPT;
+  // Explicit English selection → targeted English prompt
+  // Unknown or auto-detected non-math → KNOWLEDGE_PROMPT (classifies + answers all three subjects)
+  // Explicitly selected science/history → also use KNOWLEDGE_PROMPT (handles those subjects well)
+  const systemPrompt = subject === "english" ? ENGLISH_PROMPT : KNOWLEDGE_PROMPT;
 
   const resp = await client.messages.create({
     model: "claude-sonnet-4-6",
@@ -188,7 +191,7 @@ async function solveKnowledge(req: AskRequest, subject: Subject): Promise<AskRes
     parsed = JSON.parse(stripFences(text));
   } catch {
     return {
-      subject: subject === "unknown" ? "science" : subject,
+      subject: subject === "unknown" ? "history" : subject,
       problem: req.question || "Unknown problem",
       explanation: text || "Sorry, I couldn't answer that question.",
       error: "Failed to parse response JSON",
