@@ -2,6 +2,7 @@
 const state = {
   problemImage: null,   // { base64, type }
   referenceImage: null, // { base64, type }
+  subject: "auto",      // "auto" | "math" | "science" | "history" | "english"
 };
 
 /* ─── DOM refs ────────────────────────────────────────────────────────── */
@@ -16,6 +17,15 @@ const previews      = $("previews");
 const questionInput = $("question");
 const submitBtn     = $("submit-btn");
 const resetBtn      = $("reset-btn");
+
+/* ─── Subject selector ────────────────────────────────────────────────── */
+document.querySelectorAll(".subject-btn").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".subject-btn").forEach((b) => b.classList.remove("active"));
+    btn.classList.add("active");
+    state.subject = btn.dataset.subject;
+  });
+});
 
 /* ─── Image loading ───────────────────────────────────────────────────── */
 function fileToBase64(file) {
@@ -115,6 +125,7 @@ async function submitQuestion() {
   startStatusCycle();
 
   const body = { question };
+  if (state.subject !== "auto") body.subject = state.subject;
   if (state.problemImage) {
     body.problemImageBase64 = state.problemImage.base64;
     body.problemImageType   = state.problemImage.type;
@@ -239,7 +250,10 @@ $("error-reset-btn").addEventListener("click", reset);
 function reset() {
   state.problemImage   = null;
   state.referenceImage = null;
+  state.subject        = "auto";
   questionInput.value  = "";
+  document.querySelectorAll(".subject-btn").forEach((b) => b.classList.remove("active"));
+  document.querySelector('.subject-btn[data-subject="auto"]').classList.add("active");
   renderPreviews();
   // Reset file inputs so same file can be re-selected
   $("problem-img-input").value   = "";

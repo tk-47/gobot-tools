@@ -135,6 +135,37 @@ body {
 }
 .btn-primary:hover:not(:disabled) { background: var(--primary-hover); }
 
+/* ─── Subject selector ────────────────────────────────────────────────── */
+.subject-selector {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+.subject-btn {
+  flex: 1;
+  min-width: 60px;
+  padding: 8px 4px;
+  border: 2px solid var(--border);
+  border-radius: 20px;
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+  white-space: nowrap;
+}
+.subject-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+.subject-btn.active[data-subject="auto"]    { border-color: var(--badge-unknown); color: var(--surface); background: var(--badge-unknown); }
+.subject-btn.active[data-subject="math"]    { border-color: var(--badge-math);    color: var(--surface); background: var(--badge-math); }
+.subject-btn.active[data-subject="science"] { border-color: var(--badge-science); color: var(--surface); background: var(--badge-science); }
+.subject-btn.active[data-subject="history"] { border-color: var(--badge-history); color: var(--surface); background: var(--badge-history); }
+.subject-btn.active[data-subject="english"] { border-color: var(--badge-english); color: var(--surface); background: var(--badge-english); }
+
 /* ─── Image inputs ────────────────────────────────────────────────────── */
 .image-inputs {
   display: grid;

@@ -20,7 +20,10 @@ const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 // ─── Public entry point ────────────────────────────────────────────────────
 
 export async function solveHomework(req: AskRequest): Promise<AskResponse> {
-  const subject = detectSubject(req);
+  // Explicit subject from UI overrides auto-detection
+  const subject = req.subject && req.subject !== "unknown"
+    ? req.subject
+    : detectSubject(req);
 
   if (subject === "math") {
     return solveMath(req);
@@ -32,8 +35,8 @@ export async function solveHomework(req: AskRequest): Promise<AskResponse> {
 // ─── Subject detection ─────────────────────────────────────────────────────
 
 function detectSubject(req: AskRequest): Subject {
-  // If image provided, let the vision model detect subject (handled inside pipeline)
-  if (req.problemImageBase64) return "math"; // default; solveMath re-detects via vision
+  // Image-only with no text — let the vision model detect the subject
+  if (req.problemImageBase64 && !req.question.trim()) return "unknown";
 
   // Text-only: keyword match first
   const q = req.question.toLowerCase();

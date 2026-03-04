@@ -1,6 +1,6 @@
 {
   "name": "homework-helper",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "AI homework helper for grades 5–8: math, science, history, and English/grammar. Math answers verified by E2B code execution.",
   "type": "module",
   "scripts": {

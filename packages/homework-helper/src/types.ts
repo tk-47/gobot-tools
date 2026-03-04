@@ -2,6 +2,7 @@ export type Subject = "math" | "science" | "history" | "english" | "unknown";
 
 export interface AskRequest {
   question: string;
+  subject?: Subject;             // explicit subject from UI — skips auto-detection
   problemImageBase64?: string;   // base64 (no data URL prefix)
   problemImageType?: string;     // "image/jpeg" | "image/png" | "image/webp"
   referenceImageBase64?: string;
