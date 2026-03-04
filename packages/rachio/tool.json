@@ -1,0 +1,31 @@
+{
+  "name": "rachio",
+  "displayName": "Rachio Irrigation",
+  "description": "Control and monitor your Rachio smart irrigation system via Telegram. Start zones, set rain delays, skip schedules, and get push notifications when watering finishes — all in natural language.",
+  "version": "1.0.0",
+  "author": "tk-47",
+  "category": "integrations",
+  "tags": [
+    "rachio",
+    "irrigation",
+    "sprinkler",
+    "watering",
+    "zones",
+    "smart-home",
+    "lawn",
+    "garden",
+    "webhook"
+  ],
+  "dependencies": [],
+  "files": [
+    "prompt.md",
+    "README.md",
+    ".env.example",
+    "src/rachio.ts"
+  ],
+  "envVars": [
+    "RACHIO_API_KEY",
+    "RACHIO_WEBHOOK_SECRET"
+  ],
+  "postInstall": "Open prompt.md in Claude Code and say: \"Set up Rachio irrigation integration\""
+}

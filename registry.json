@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "generatedAt": "2026-03-03T02:29:00.296Z",
+  "generatedAt": "2026-03-04T16:10:55.262Z",
   "tools": [
     {
       "name": "apple-health",
@@ -60,36 +60,6 @@
       ],
       "envVars": [],
       "postInstall": "Open prompt.md in Claude Code and say: \"Set up Apple Notes integration\""
-    },
-    {
-      "name": "url-calendar",
-      "displayName": "URL Calendar (ICS Feed)",
-      "description": "Read any calendar — Apple, Google, Outlook, or any CalDAV source — by pointing the bot at a public or private ICS feed URL. No API keys, no OAuth, no macOS Automation. Works on Mac, VPS, or any Linux host.",
-      "version": "1.0.0",
-      "author": "tk-47",
-      "category": "integrations",
-      "tags": [
-        "calendar",
-        "ics",
-        "webcal",
-        "apple-calendar",
-        "google-calendar",
-        "caldav",
-        "scheduling",
-        "productivity"
-      ],
-      "dependencies": [],
-      "files": [
-        "prompt.md",
-        "README.md",
-        ".env.example",
-        "src/url-calendar.ts",
-        "src/url-calendar-cli.ts"
-      ],
-      "envVars": [
-        "APPLE_CALENDAR_URL"
-      ],
-      "postInstall": "Open prompt.md in Claude Code and say: \"Set up URL calendar integration\""
     },
     {
       "name": "fireflies",
@@ -254,6 +224,37 @@
       "postInstall": "Open prompt.md in Claude Code and say: \"Set up Oura Ring integration\""
     },
     {
+      "name": "rachio",
+      "displayName": "Rachio Irrigation",
+      "description": "Control and monitor your Rachio smart irrigation system via Telegram. Start zones, set rain delays, skip schedules, and get push notifications when watering finishes — all in natural language.",
+      "version": "1.0.0",
+      "author": "tk-47",
+      "category": "integrations",
+      "tags": [
+        "rachio",
+        "irrigation",
+        "sprinkler",
+        "watering",
+        "zones",
+        "smart-home",
+        "lawn",
+        "garden",
+        "webhook"
+      ],
+      "dependencies": [],
+      "files": [
+        "prompt.md",
+        "README.md",
+        ".env.example",
+        "src/rachio.ts"
+      ],
+      "envVars": [
+        "RACHIO_API_KEY",
+        "RACHIO_WEBHOOK_SECRET"
+      ],
+      "postInstall": "Open prompt.md in Claude Code and say: \"Set up Rachio irrigation integration\""
+    },
+    {
       "name": "security-audit",
       "displayName": "Application Security Audit",
       "description": "A 5-phase security audit prompt for any codebase. Maps attack surface, identifies injection/auth/crypto/config vulnerabilities, classifies by severity, and walks through fixes one at a time.",
@@ -311,7 +312,6 @@
         ".gitignore",
         "src/index.ts",
         "src/config.ts",
-        "src/lib/ignores.ts",
         "src/lib/scanner.ts",
         "src/lib/recon.ts",
         "src/lib/tools.ts"
@@ -411,6 +411,36 @@
       "postInstall": "Open prompt.md in Claude Code and say: \"Set up Tempest weather integration\""
     },
     {
+      "name": "url-calendar",
+      "displayName": "URL Calendar (ICS Feed)",
+      "description": "Read any calendar — Apple, Google, Outlook, or any CalDAV source — by pointing the bot at a public or private ICS feed URL. No API keys, no OAuth, no macOS Automation. Works on Mac, VPS, or any Linux host.",
+      "version": "1.0.0",
+      "author": "tk-47",
+      "category": "integrations",
+      "tags": [
+        "calendar",
+        "ics",
+        "webcal",
+        "apple-calendar",
+        "google-calendar",
+        "caldav",
+        "scheduling",
+        "productivity"
+      ],
+      "dependencies": [],
+      "files": [
+        "prompt.md",
+        "README.md",
+        ".env.example",
+        "src/url-calendar.ts",
+        "src/url-calendar-cli.ts"
+      ],
+      "envVars": [
+        "APPLE_CALENDAR_URL"
+      ],
+      "postInstall": "Open prompt.md in Claude Code and say: \"Set up URL calendar integration\""
+    },
+    {
       "name": "voice-interface",
       "displayName": "Voice Interface",
       "description": "Add two voice interfaces: Telegram voice notes (Gemini STT + Speaktor TTS) and a web push-to-talk interface (Web Speech API + OpenAI TTS). Per-agent voice mapping.",
@@ -439,47 +469,6 @@
         "VOICE_WEB_TOKEN"
       ],
       "postInstall": "Open prompt.md in Claude Code and say: \"Set up voice interface\""
-    },
-    {
-      "name": "homework-helper",
-      "displayName": "Homework Helper",
-      "description": "Grades 5–8 homework helper web app. Math answers are verified by E2B code execution — Claude never guesses. Science and history use vision. Runs on any machine; your child connects from any device over WiFi.",
-      "version": "1.0.0",
-      "author": "tk-47",
-      "category": "productivity",
-      "tags": [
-        "homework",
-        "education",
-        "math",
-        "science",
-        "history",
-        "e2b",
-        "kids",
-        "family",
-        "web",
-        "vision",
-        "katex"
-      ],
-      "dependencies": [],
-      "files": [
-        "prompt.md",
-        "README.md",
-        ".env.example",
-        "package.json",
-        "server.ts",
-        "src/types.ts",
-        "src/prompts.ts",
-        "src/solver.ts",
-        "public/index.html",
-        "public/app.js",
-        "public/styles.css"
-      ],
-      "envVars": [
-        "ANTHROPIC_API_KEY",
-        "E2B_API_KEY",
-        "PORT"
-      ],
-      "postInstall": "cd into homework-helper/, run 'bun install', symlink or copy your .env, then 'bun run start'. Open prompt.md in Claude Code for a guided walkthrough."
     },
     {
       "name": "vps-hardening",
