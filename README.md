@@ -93,6 +93,20 @@ Connect your bot to Fireflies.ai so meeting transcripts are automatically stored
 - **Setup time:** ~10 minutes
 - **Requires:** `FIREFLIES_API_KEY`, `FIREFLIES_WEBHOOK_SECRET`
 
+### [Rachio Irrigation](packages/rachio) — `gobot-tools install rachio`
+
+Control and monitor your Rachio smart irrigation system via Telegram. Start zones, set rain delays, check schedules, and receive push notifications when watering starts or finishes — all in natural language.
+
+- Zone control — "water front yard for 15 min", "run zone 3 for 10 minutes"
+- Schedule management — start, skip, or seasonally adjust schedules
+- Rain delay — "rain delay 2 days" activates with resume date in the reply
+- Status queries — "rachio status", "is it watering?", "watering schedule"
+- Push notifications — Telegram alert when zone completes, schedule finishes, rain sensor triggers, or device goes offline (via VPS webhook)
+- Morning briefing — next scheduled run appended to daily briefing automatically
+- **No LLM parsing** — regex intent matching keeps it fast and offline-safe
+- **Setup time:** ~5 minutes
+- **Requires:** `RACHIO_API_KEY`, `RACHIO_WEBHOOK_SECRET` (for push notifications)
+
 ### [FlightAware Flight Tracking](packages/flightaware) — `gobot-tools install flightaware`
 
 Real-time flight tracking via FlightAware AeroAPI. Look up any flight, set up active tracking with proactive Telegram notifications for gate changes, delays, and arrivals, and pull travel data into morning briefings.
