@@ -18,7 +18,10 @@
   --badge-math: #4f46e5;
   --badge-science: #059669;
   --badge-history: #b45309;
+  --badge-english: #0891b2;
   --badge-unknown: #6b7280;
+  --english-bg: #ecfeff;
+  --english-border: #67e8f9;
   --shadow: 0 1px 3px rgba(0,0,0,.08), 0 4px 12px rgba(0,0,0,.06);
   --radius: 12px;
 }
@@ -34,6 +37,8 @@
     --math-border: #d97706;
     --step-bg: #052e16;
     --step-border: #16a34a;
+    --english-bg: #083344;
+    --english-border: #0e7490;
     --shadow: 0 1px 3px rgba(0,0,0,.3), 0 4px 12px rgba(0,0,0,.25);
   }
 }
@@ -235,6 +240,7 @@ textarea::placeholder { color: var(--muted); }
 .badge-math    { background: var(--badge-math); }
 .badge-science { background: var(--badge-science); }
 .badge-history { background: var(--badge-history); }
+.badge-english { background: var(--badge-english); }
 .badge-unknown { background: var(--badge-unknown); }
 
 .problem-text {
@@ -279,6 +285,17 @@ textarea::placeholder { color: var(--muted); }
 .explanation-text {
   font-size: 1rem;
   line-height: 1.7;
+}
+
+.corrected-text {
+  background: var(--english-bg);
+  border: 2px solid var(--english-border);
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin-bottom: 16px;
+  font-size: 1rem;
+  line-height: 1.7;
+  white-space: pre-wrap;
 }
 
 .steps-list {

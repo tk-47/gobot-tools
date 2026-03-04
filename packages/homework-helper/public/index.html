@@ -19,7 +19,7 @@
     <!-- Header -->
     <header class="header">
       <h1>Homework Helper</h1>
-      <p>Math, Science &amp; History — Grades 5–8</p>
+      <p>Math, Science, History &amp; English — Grades 5–8</p>
     </header>
 
     <!-- Input card -->
@@ -45,7 +45,7 @@
       <!-- Text question -->
       <textarea
         id="question"
-        placeholder="Or type your question here… e.g. What is 3/4 + 1/2?"
+        placeholder="Type your question… e.g. What is 3/4 + 1/2?  or  Correct this sentence: the dog runned fast."
         rows="3"
         autocorrect="off"
         autocapitalize="sentences"
@@ -73,6 +73,12 @@
       <div class="answer-box" id="answer-section">
         <div class="answer-box-label">Answer</div>
         <div class="answer-value" id="answer-value"></div>
+      </div>
+
+      <!-- Corrected text — English only -->
+      <div id="corrected-section" class="hidden">
+        <div class="section-label">Corrected Version</div>
+        <div class="corrected-text" id="corrected-text"></div>
       </div>
 
       <!-- Explanation -->

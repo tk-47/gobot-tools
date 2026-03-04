@@ -2,7 +2,7 @@
 
 A standalone web app that turns your existing bot's API keys into a grades 5–8 homework helper. Your child opens it on any device — iPad, tablet, laptop, phone — on the same WiFi as the computer running the server.
 
-The critical design decision: **math answers are never guessed**. Claude writes Python code, E2B runs it in an isolated cloud VM, and the verified output becomes the answer. Claude only explains how to get there. For science and history, a single vision call reads the question (or a photo of the worksheet), grounds the answer in any reference material provided, and explains at grade level.
+The critical design decision: **math answers are never guessed**. Claude writes Python code, E2B runs it in an isolated cloud VM, and the verified output becomes the answer. Claude only explains how to get there. For science, history, and English, a single vision call reads the question (or a photo of the worksheet), grounds the answer in any reference material provided, and explains at grade level.
 
 No database. No login. No framework. Stateless per request.
 
@@ -17,6 +17,8 @@ No database. No login. No framework. Stateless per request.
 | Type a science question | Claude explains at grade 5–8 level |
 | Photo of textbook + question | Claude answers grounded in the page shown |
 | History question | Claude explains, explicitly flags anything uncertain |
+| "Correct this sentence: the dog runned fast" | Shows corrected version + explains each grammar rule |
+| "Define photosynthesis" or vocabulary question | Definition, part of speech, synonyms, example sentence |
 | Off-topic question | Politely redirected back to homework |
 
 ---

@@ -187,6 +187,16 @@ function renderAnswer(data) {
     stepsSection.classList.add("hidden");
   }
 
+  // Corrected text (English only)
+  const correctedSection = $("corrected-section");
+  const correctedEl      = $("corrected-text");
+  if (data.corrected) {
+    correctedSection.classList.remove("hidden");
+    correctedEl.textContent = data.corrected;
+  } else {
+    correctedSection.classList.add("hidden");
+  }
+
   // Explanation
   const explanationEl = $("explanation-text");
   explanationEl.textContent = data.explanation || "";

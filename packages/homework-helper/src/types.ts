@@ -1,4 +1,4 @@
-export type Subject = "math" | "science" | "history" | "unknown";
+export type Subject = "math" | "science" | "history" | "english" | "unknown";
 
 export interface AskRequest {
   question: string;
@@ -15,5 +15,6 @@ export interface AskResponse {
   pythonCode?: string;   // math only — shown for transparency
   explanation: string;   // full explanation
   steps?: string[];      // math: numbered steps
+  corrected?: string;    // english only — corrected version of submitted text
   error?: string;
 }

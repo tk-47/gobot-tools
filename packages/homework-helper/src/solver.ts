@@ -11,7 +11,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { Sandbox } from "@e2b/code-interpreter";
 import type { AskRequest, AskResponse, Subject } from "./types";
-import { MATH_CODE_PROMPT, MATH_EXPLAIN_PROMPT, SCIENCE_HISTORY_PROMPT } from "./prompts";
+import { MATH_CODE_PROMPT, MATH_EXPLAIN_PROMPT, SCIENCE_HISTORY_PROMPT, ENGLISH_PROMPT } from "./prompts";
 
 const MATH_KEYWORDS = /\b(solve|equation|calculate|fraction|decimal|percent|algebra|geometry|area|perimeter|volume|angle|triangle|circle|square|rectangle|factor|simplify|evaluate|multiply|divide|add|subtract|sum|product|quotient|remainder|exponent|power|root|sqrt|inequality|graph|slope|ratio|proportion|probability|mean|median|mode|range|integer|prime|composite)\b/i;
 
@@ -40,6 +40,7 @@ function detectSubject(req: AskRequest): Subject {
   if (MATH_KEYWORDS.test(q)) return "math";
   if (/\b(history|war|revolution|president|colony|civil|ancient|empire|treaty|congress|constitution|amendment|slavery|migration|civilization|dynasty|kingdom|republic|independence)\b/i.test(q)) return "history";
   if (/\b(science|biology|chemistry|physics|cell|atom|molecule|element|compound|energy|force|gravity|velocity|acceleration|photosynthesis|ecosystem|organism|evolution|genetics|dna|periodic|element|reaction|hypothesis|experiment|climate|weather|planet|solar|body|organ|tissue)\b/i.test(q)) return "science";
+  if (/\b(grammar|punctuation|sentence|paragraph|essay|vocabulary|vocab|spelling|definition|synonym|antonym|noun|verb|adjective|adverb|pronoun|preposition|conjunction|interjection|subject|predicate|clause|phrase|comma|apostrophe|capitalize|capitalization|parts of speech|reading|comprehension|metaphor|simile|figurative|theme|plot|character|setting|conflict|author|poetry|poem|rhyme|tone|mood|inference|summarize|main idea|context clues|prefix|suffix|root word|homophone|homonym|dialogue|narrative|persuasive|expository|descriptive)\b/i.test(q)) return "english";
 
   // Ambiguous — default to unknown (solver will use vision model to classify)
   return "unknown";
@@ -168,15 +169,17 @@ async function solveKnowledge(req: AskRequest, subject: Subject): Promise<AskRes
     text: "Answer the question above and return JSON as described in the system prompt.",
   });
 
+  const systemPrompt = subject === "english" ? ENGLISH_PROMPT : SCIENCE_HISTORY_PROMPT;
+
   const resp = await client.messages.create({
     model: "claude-sonnet-4-6",
     max_tokens: 1024,
-    system: SCIENCE_HISTORY_PROMPT,
+    system: systemPrompt,
     messages: [{ role: "user", content }],
   });
 
   const text = extractText(resp);
-  let parsed: { subject: string; problem: string; explanation: string };
+  let parsed: { subject: string; problem: string; explanation: string; corrected?: string };
 
   try {
     parsed = JSON.parse(stripFences(text));
@@ -193,6 +196,7 @@ async function solveKnowledge(req: AskRequest, subject: Subject): Promise<AskRes
     subject: (parsed.subject as Subject) || subject,
     problem: parsed.problem || req.question,
     explanation: parsed.explanation,
+    ...(parsed.corrected ? { corrected: parsed.corrected } : {}),
   };
 }
 

@@ -1,0 +1,40 @@
+{
+  "name": "homework-helper",
+  "displayName": "Homework Helper",
+  "description": "Grades 5–8 homework helper for math, science, history, and English/grammar. Math answers are verified by E2B code execution — never guessed. Works from any device on the same WiFi.",
+  "version": "1.1.0",
+  "author": "tk-47",
+  "category": "productivity",
+  "tags": [
+    "homework",
+    "education",
+    "math",
+    "science",
+    "history",
+    "english",
+    "grammar",
+    "vocabulary",
+    "kids",
+    "grades-5-8",
+    "e2b",
+    "vision"
+  ],
+  "dependencies": [],
+  "files": [
+    "prompt.md",
+    "README.md",
+    ".env.example",
+    "server.ts",
+    "src/types.ts",
+    "src/prompts.ts",
+    "src/solver.ts",
+    "public/index.html",
+    "public/app.js",
+    "public/styles.css"
+  ],
+  "envVars": [
+    "ANTHROPIC_API_KEY",
+    "E2B_API_KEY"
+  ],
+  "postInstall": "Open prompt.md in Claude Code and say: \"Set up Homework Helper\""
+}
