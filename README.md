@@ -60,6 +60,19 @@ Connect your bot to a WeatherFlow Tempest personal weather station. Get live con
 - **Setup time:** ~5 minutes
 - **Requires:** `TEMPEST_TOKEN`, `TEMPEST_STATION_ID`
 
+### [Travel Weather Alerts](packages/travel-weather) — `gobot-tools install travel-weather`
+
+Automatic weather and traffic alerts for out-of-town calendar events. When your calendar has an event with a location outside your home area, the bot checks weather along the driving route — outbound and return — and includes warnings in the morning briefing. Severe weather triggers a standalone Telegram alert.
+
+- Route weather: samples conditions every ~30 miles along the driving route
+- Both legs: outbound (depart 1 hour before event) and return (depart when event ends)
+- Traffic estimates from Google Directions — shows delay if >5 min over normal
+- Hazard detection: rain, storms, snow, ice, fog, or ≥40% precipitation
+- Standalone Telegram alert before briefing for severe conditions
+- Works with any calendar source: Outlook, Google, Apple, or ICS feeds
+- **Setup time:** ~5 minutes
+- **Requires:** `GOOGLE_MAPS_API_KEY`, `OPENWEATHERMAP_API_KEY`
+
 ### [Apple Notes (Local macOS)](packages/apple-notes) — `gobot-tools install apple-notes`
 
 Connect your bot to Apple Notes.app using local macOS Automation (JXA). Read/search/create/append notes directly on your Mac with no API keys, OAuth flow, or cloud API setup.

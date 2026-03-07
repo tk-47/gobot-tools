@@ -426,6 +426,38 @@
       "postInstall": "Open prompt.md in Claude Code and say: \"Set up Teams integration\""
     },
     {
+      "name": "travel-weather",
+      "displayName": "Travel Weather Alerts",
+      "description": "Automatic weather and traffic alerts for out-of-town calendar events. Checks conditions along the entire driving route — outbound and return — using Google Directions and OpenWeatherMap. Works with any calendar source.",
+      "version": "1.0.0",
+      "author": "tk-47",
+      "category": "integrations",
+      "tags": [
+        "weather",
+        "travel",
+        "driving",
+        "route",
+        "traffic",
+        "calendar",
+        "briefing",
+        "alerts",
+        "google-maps",
+        "openweathermap"
+      ],
+      "dependencies": [],
+      "files": [
+        "prompt.md",
+        "README.md",
+        ".env.example",
+        "src/travel-weather.ts"
+      ],
+      "envVars": [
+        "GOOGLE_MAPS_API_KEY",
+        "OPENWEATHERMAP_API_KEY"
+      ],
+      "postInstall": "Open prompt.md in Claude Code and say: \"Set up travel weather alerts\""
+    },
+    {
       "name": "tempest-weather",
       "displayName": "Tempest Weather Station",
       "description": "Connect to a WeatherFlow Tempest personal weather station for live conditions and 5-day forecasts. Bypasses Claude for speed and accuracy with direct API calls.",
