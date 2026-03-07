@@ -60,7 +60,7 @@ Connect your bot to a WeatherFlow Tempest personal weather station. Get live con
 - **Setup time:** ~5 minutes
 - **Requires:** `TEMPEST_TOKEN`, `TEMPEST_STATION_ID`
 
-### [Travel Weather Alerts](packages/travel-weather) — `gobot-tools install travel-weather`
+### [Traffic & Weather Alerts](packages/traffic-weather) — `gobot-tools install traffic-weather`
 
 Automatic weather and traffic alerts for out-of-town calendar events. When your calendar has an event with a location outside your home area, the bot checks weather along the driving route — outbound and return — and includes warnings in the morning briefing. Severe weather triggers a standalone Telegram alert.
 

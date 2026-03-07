@@ -1,4 +1,4 @@
-# Travel Weather Alerts
+# Traffic & Weather Alerts
 
 Automatic weather and traffic alerts for out-of-town calendar events. When your calendar has an event with a location outside your home area, the bot checks weather conditions along the entire driving route — outbound and return — and warns you about rain, storms, snow, ice, or fog before you leave. Shows up in your morning briefing or as a standalone alert for severe conditions.
 
@@ -213,5 +213,5 @@ Your Telegram chat
 ## Updating
 
 ```bash
-gobot-tools update travel-weather
+gobot-tools update traffic-weather
 ```

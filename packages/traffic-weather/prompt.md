@@ -1,6 +1,6 @@
-# Travel Weather Alerts
+# Traffic & Weather Alerts
 
-> **For Claude Code:** Drop this file into your project root or paste it into a Claude Code session. When you're ready, say: **"Set up travel weather alerts"**
+> **For Claude Code:** Drop this file into your project root or paste it into a Claude Code session. When you're ready, say: **"Set up traffic and weather alerts"**
 
 Check weather conditions along driving routes for out-of-town calendar events. When the morning briefing runs, the bot scans your calendar for events with locations outside your home area, gets the driving route, and checks weather at points along the way — outbound and return. Severe weather triggers a standalone Telegram alert before the full briefing.
 

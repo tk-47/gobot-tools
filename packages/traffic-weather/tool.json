@@ -1,6 +1,6 @@
 {
-  "name": "travel-weather",
-  "displayName": "Travel Weather Alerts",
+  "name": "traffic-weather",
+  "displayName": "Traffic & Weather Alerts",
   "description": "Automatic weather and traffic alerts for out-of-town calendar events. Checks conditions along the entire driving route — outbound and return — using Google Directions and OpenWeatherMap. Works with any calendar source.",
   "version": "1.0.0",
   "author": "tk-47",
@@ -28,5 +28,5 @@
     "GOOGLE_MAPS_API_KEY",
     "OPENWEATHERMAP_API_KEY"
   ],
-  "postInstall": "Open prompt.md in Claude Code and say: \"Set up travel weather alerts\""
+  "postInstall": "Open prompt.md in Claude Code and say: \"Set up traffic and weather alerts\""
 }
