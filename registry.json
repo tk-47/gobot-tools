@@ -429,7 +429,7 @@
       "name": "traffic-weather",
       "displayName": "Traffic & Weather Alerts",
       "description": "Automatic weather and traffic alerts for out-of-town calendar events. Checks conditions along the entire driving route — outbound and return — using Google Directions and OpenWeatherMap. Works with any calendar source.",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "author": "tk-47",
       "category": "integrations",
       "tags": [

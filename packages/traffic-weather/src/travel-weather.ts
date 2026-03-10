@@ -55,6 +55,23 @@ function isOutOfTown(location: string): boolean {
   return !LOCAL_KEYWORDS.some((k) => lower.includes(k));
 }
 
+/**
+ * Qualify ambiguous locations (e.g. "St. Demetrios Greek Orthodox Church")
+ * by appending the home region so Google Maps resolves nearby, not cross-country.
+ * Locations that already contain a state abbreviation, zip, or city are left alone.
+ */
+function qualifyLocation(location: string): string {
+  // Already has a US state abbreviation (", TX" / ", CA" etc.) or zip code
+  if (/,\s*[A-Z]{2}\b/.test(location) || /\b\d{5}(-\d{4})?\b/.test(location)) {
+    return location;
+  }
+  // Already mentions a known city name (heuristic: contains a comma suggesting "Place, City")
+  if (location.includes(",")) {
+    return location;
+  }
+  return `${location}, ${HOME_CITY}`;
+}
+
 async function getRouteInfo(destination: string, departureTime?: Date): Promise<RouteInfo | null> {
   const url = new URL("https://maps.googleapis.com/maps/api/directions/json");
   url.searchParams.set("origin", HOME_CITY);
@@ -159,13 +176,28 @@ async function checkLegWeather(
   return { warnings, hasWarning };
 }
 
+/**
+ * Build the best location string from an Outlook event's location object.
+ * Prefers full address (from Bing Maps) over just displayName.
+ */
+function resolveOutlookLocation(loc: any): string {
+  // If Bing Maps address is available, build a full address string
+  const addr = loc.address;
+  if (addr) {
+    const parts = [addr.street, addr.city, addr.state, addr.postalCode].filter(Boolean);
+    if (parts.length >= 2) return parts.join(", ");
+  }
+  // Fall back to displayName (may be just a venue name)
+  return loc.displayName;
+}
+
 // Normalize Outlook events into TravelEvent
 function fromOutlookEvents(events: any[]): TravelEvent[] {
   return events
     .filter((e) => !e.isAllDay && e.location?.displayName && isOutOfTown(e.location.displayName))
     .map((e) => ({
       name: e.subject ?? "Event",
-      location: e.location.displayName,
+      location: resolveOutlookLocation(e.location),
       start: new Date(e.start.dateTime),
       end: new Date(e.end.dateTime),
     }));
@@ -190,15 +222,17 @@ export async function checkTravelWeather(
   if (!GOOGLE_MAPS_KEY || !OWM_KEY) return null;
 
   const now = new Date();
+  const todayStart = new Date(now);
+  todayStart.setHours(0, 0, 0, 0);
   const tomorrow = new Date(now);
   tomorrow.setDate(tomorrow.getDate() + 1);
   tomorrow.setHours(23, 59, 59, 999);
 
-  // Merge both calendar sources
+  // Merge both calendar sources — only today and tomorrow (exclude past events)
   const allTravel = [
     ...fromOutlookEvents(outlookEvents),
     ...(appleEvents ? fromAppleEvents(appleEvents) : []),
-  ].filter((e) => e.start <= tomorrow);
+  ].filter((e) => e.start >= todayStart && e.start <= tomorrow);
 
   // Deduplicate by name+start time (same event in both calendars)
   const seen = new Set<string>();
@@ -215,7 +249,7 @@ export async function checkTravelWeather(
   let hasWarning = false;
 
   for (const event of travelEvents) {
-    const destination = event.location;
+    const destination = qualifyLocation(event.location);
     const departureTime = new Date(event.start.getTime() - 60 * 60 * 1000);
 
     let route: RouteInfo | null;
