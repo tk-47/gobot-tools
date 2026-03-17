@@ -202,7 +202,7 @@ function formatReport(
   return lines.join("\n");
 }
 
-function formatTelegramAlert(report: ScanReport & { mode: string }, diff: ScanDiff): string | null {
+function formatTelegramAlert(report: ScanReport & { mode: string }, diff: ScanDiff, aiSummary?: string): string | null {
   const criticals = report.results.filter((r) => !r.pass && r.severity === "critical");
   const highs = report.results.filter((r) => !r.pass && r.severity === "high");
 
@@ -239,6 +239,17 @@ function formatTelegramAlert(report: ScanReport & { mode: string }, diff: ScanDi
   if (diff.resolved.length > 0) {
     lines.push("");
     lines.push(`✅ ${diff.resolved.length} issue(s) resolved since last scan`);
+  }
+
+  if (aiSummary) {
+    const escaped = aiSummary
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .slice(0, 800);
+    lines.push("");
+    lines.push(`<b>🤖 AI Analysis:</b>`);
+    lines.push(escaped);
   }
 
   return lines.join("\n");
@@ -617,7 +628,7 @@ export async function runSecurityScan(mode: Mode): Promise<ScanOutput> {
   const compact = formatCompactTelegram(report, diff, filename, report.ai_summary);
 
   if (mode !== "scan") {
-    const alert = formatTelegramAlert(report, diff);
+    const alert = formatTelegramAlert(report, diff, report.ai_summary);
     if (alert) {
       await sendTelegramAlert(alert);
       console.log("Telegram alert sent.");
