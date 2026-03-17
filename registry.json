@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "generatedAt": "2026-03-04T21:31:03.882Z",
+  "generatedAt": "2026-03-17T23:15:12.204Z",
   "tools": [
     {
       "name": "apple-health",
@@ -321,7 +321,7 @@
       "name": "security-sentinel",
       "displayName": "Security Sentinel",
       "description": "Autonomous security scanning agent for VPS and web infrastructure. 90+ checks across 12 tools covering auth, TLS, headers, VPS hardening, API credentials, dependencies, SAST, secrets, email security, HTTP recon, and host hardening. SOC2, HIPAA, and PCI-DSS compliance reporting. Optional AI analysis via Ollama or Claude API.",
-      "version": "2.0.2",
+      "version": "2.0.3",
       "author": "tk-47",
       "category": "security",
       "tags": [
@@ -426,10 +426,35 @@
       "postInstall": "Open prompt.md in Claude Code and say: \"Set up Teams integration\""
     },
     {
+      "name": "tempest-weather",
+      "displayName": "Tempest Weather Station",
+      "description": "Connect to a WeatherFlow Tempest personal weather station for live conditions and 5-day forecasts. Bypasses Claude for speed and accuracy with direct API calls.",
+      "version": "1.0.0",
+      "author": "tk-47",
+      "category": "integrations",
+      "tags": [
+        "weather",
+        "tempest",
+        "weatherflow",
+        "forecast",
+        "temperature",
+        "station"
+      ],
+      "dependencies": [],
+      "files": [
+        "prompt.md"
+      ],
+      "envVars": [
+        "TEMPEST_TOKEN",
+        "TEMPEST_STATION_ID"
+      ],
+      "postInstall": "Open prompt.md in Claude Code and say: \"Set up Tempest weather integration\""
+    },
+    {
       "name": "traffic-weather",
       "displayName": "Traffic & Weather Alerts",
       "description": "Automatic weather and traffic alerts for out-of-town calendar events. Checks conditions along the entire driving route — outbound and return — using Google Directions and OpenWeatherMap. Works with any calendar source.",
-      "version": "1.1.0",
+      "version": "1.0.0",
       "author": "tk-47",
       "category": "integrations",
       "tags": [
@@ -456,31 +481,6 @@
         "OPENWEATHERMAP_API_KEY"
       ],
       "postInstall": "Open prompt.md in Claude Code and say: \"Set up traffic and weather alerts\""
-    },
-    {
-      "name": "tempest-weather",
-      "displayName": "Tempest Weather Station",
-      "description": "Connect to a WeatherFlow Tempest personal weather station for live conditions and 5-day forecasts. Bypasses Claude for speed and accuracy with direct API calls.",
-      "version": "1.0.0",
-      "author": "tk-47",
-      "category": "integrations",
-      "tags": [
-        "weather",
-        "tempest",
-        "weatherflow",
-        "forecast",
-        "temperature",
-        "station"
-      ],
-      "dependencies": [],
-      "files": [
-        "prompt.md"
-      ],
-      "envVars": [
-        "TEMPEST_TOKEN",
-        "TEMPEST_STATION_ID"
-      ],
-      "postInstall": "Open prompt.md in Claude Code and say: \"Set up Tempest weather integration\""
     },
     {
       "name": "url-calendar",
