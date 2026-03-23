@@ -1,0 +1,29 @@
+{
+  "description": "URL domains that should not trigger EXTERNAL_URL findings. Extensible — add domains with caution.",
+  "defaults": [
+    "github.com",
+    "raw.githubusercontent.com",
+    "npmjs.org",
+    "registry.npmjs.org",
+    "bun.sh",
+    "react.dev",
+    "vite.dev",
+    "nodejs.org",
+    "developer.mozilla.org",
+    "docs.python.org",
+    "docs.docker.com",
+    "kubernetes.io",
+    "supabase.com",
+    "tailwindcss.com",
+    "nextjs.org",
+    "typescriptlang.org",
+    "rollupjs.org",
+    "expressjs.com",
+    "socket.io",
+    "redis.io",
+    "postgresql.org",
+    "example.com",
+    "localhost"
+  ],
+  "custom": []
+}
