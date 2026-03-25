@@ -28,24 +28,47 @@ document.querySelectorAll(".subject-btn").forEach((btn) => {
 });
 
 /* ─── Image loading ───────────────────────────────────────────────────── */
-function fileToBase64(file) {
+function compressImage(file) {
+  // Resize to max 1600px on the longest side and re-encode as JPEG @ 0.82
+  // quality. This keeps all images safely under Anthropic's 5 MB base64 limit
+  // regardless of source (iPad HEIC, PNG, etc.).
+  const MAX_PX = 1600;
   return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => {
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+
+      // Compute scaled dimensions — only downscale, never upscale
+      let { width, height } = img;
+      if (width > MAX_PX || height > MAX_PX) {
+        if (width >= height) {
+          height = Math.round((height / width) * MAX_PX);
+          width  = MAX_PX;
+        } else {
+          width  = Math.round((width / height) * MAX_PX);
+          height = MAX_PX;
+        }
+      }
+
+      const canvas  = document.createElement("canvas");
+      canvas.width  = width;
+      canvas.height = height;
+      canvas.getContext("2d").drawImage(img, 0, 0, width, height);
+
       // Strip data URL prefix — we only want raw base64
-      const result = reader.result;
-      const base64 = result.split(",")[1];
-      resolve(base64);
+      const dataUrl = canvas.toDataURL("image/jpeg", 0.82);
+      const base64  = dataUrl.split(",")[1];
+      resolve({ base64, type: "image/jpeg" });
     };
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
+    img.onerror = reject;
+    img.src = url;
   });
 }
 
 async function handleImageInput(file, slot) {
   if (!file) return;
-  const base64 = await fileToBase64(file);
-  state[slot] = { base64, type: file.type || "image/jpeg" };
+  state[slot] = await compressImage(file);
   renderPreviews();
 }
 
