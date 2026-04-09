@@ -566,6 +566,37 @@
       ],
       "envVars": [],
       "postInstall": "Open prompt.md while connected to your VPS via Claude Code. Paste the prompt and follow the steps."
+    },
+    {
+      "name": "skill-auditor",
+      "displayName": "Skill Auditor",
+      "description": "Pre-install security scanner for Claude Code skills. Fetches source from GitHub, runs 10 deterministic checks + AI semantic review.",
+      "version": "1.0.0",
+      "author": "tk-47",
+      "category": "security",
+      "tags": [
+        "security",
+        "skills",
+        "scanner",
+        "supply-chain",
+        "audit",
+        "github",
+        "claude-code"
+      ],
+      "dependencies": [],
+      "files": [
+        "prompt.md",
+        "README.md",
+        "SKILL.md",
+        "src/index.ts",
+        "src/lib/types.ts",
+        "src/lib/checks.ts",
+        "src/lib/github.ts",
+        "src/lib/report.ts",
+        "src/data/safe-domains.json"
+      ],
+      "envVars": [],
+      "postInstall": "Copy SKILL.md to ~/.claude/skills/skill-auditor/ to enable the /audit-skill command"
     }
   ]
 }
